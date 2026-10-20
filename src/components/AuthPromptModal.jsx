@@ -22,16 +22,6 @@ export function AuthPromptModal({ isOpen, onClose }) {
     navigate(`/register?role=${role}`)
   }
 
-  const handleQuickDemoLogin = (role) => {
-    switchDemoRole(role)
-    onClose()
-    if (role === 'business_owner') {
-      navigate('/owner-dashboard')
-    } else {
-      navigate('/dashboard')
-    }
-  }
-
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
       <div 
@@ -135,26 +125,8 @@ export function AuthPromptModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Quick Demo Test Logins */}
-        <div className="pt-4 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-1.5 text-neutral-500 font-medium">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
-            <span>Instant Demo Sign In:</span>
-            <button
-              onClick={() => handleQuickDemoLogin('customer')}
-              className="font-bold text-red-600 hover:underline px-1.5 py-0.5 rounded bg-red-50"
-            >
-              Customer Demo
-            </button>
-            <span>•</span>
-            <button
-              onClick={() => handleQuickDemoLogin('business_owner')}
-              className="font-bold text-black hover:underline px-1.5 py-0.5 rounded bg-neutral-100"
-            >
-              Partner Demo
-            </button>
-          </div>
-
+        {/* Guest Continue Footer */}
+        <div className="pt-4 border-t border-neutral-200 flex items-center justify-end text-xs">
           <button
             onClick={onClose}
             className="text-neutral-500 hover:text-black font-semibold text-xs transition"

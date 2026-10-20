@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Sparkles, Search, ArrowRight, CheckCircle2, AlertCircle, Loader2, MapPin, Tag } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Sparkles, Search, ArrowRight, CheckCircle2, AlertCircle, Loader2, MapPin, Tag, HelpCircle, Phone, Mail, ExternalLink } from 'lucide-react'
 import { Modal } from './common/Modal'
 import { BusinessCard } from './common/BusinessCard'
 import { useLanguage } from '@/context/LanguageContext'
@@ -7,18 +8,19 @@ import { queryAIAssistant } from '@/services/aiService'
 
 export function AIAssistantModal({ isOpen, onClose }) {
   const { t, language } = useLanguage()
+  const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState('')
 
   const examplePrompts = [
-    'Find best service in sivagangai',
+    'Show all services in kkdi',
     'Emergency plumber in Karaikudi under ₹500',
+    'How to register my business on Nearzy?',
     'Electrician in Gandhipuram Coimbatore',
-    'AC repair & foam cleaning in Madurai within 30km',
-    'Best laptop service center in Salem',
-    'Full home deep cleaning in Tirunelveli',
+    'Best car and bike services in Madurai',
+    'Nearzy support phone number & contact',
   ]
 
   const handleSearch = async (textToSearch) => {
@@ -143,81 +145,144 @@ export function AIAssistantModal({ isOpen, onClose }) {
           </div>
         )}
 
-        {/* Search Results & Intent Analysis */}
+        {/* Search Results & Knowledge / Intent Analysis */}
         {result && !loading && (
           <div className="space-y-5 animate-in fade-in duration-200">
-            {/* Extracted Intent Criteria Badges */}
-            <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-black uppercase tracking-wider text-neutral-600">
-                  {t('aiInterpretedIntent')}
-                </span>
-                <button
-                  onClick={handleReset}
-                  className="text-xs text-red-600 hover:underline font-bold"
-                >
-                  New AI Search
-                </button>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2 pt-1">
-                {result.criteria?.categoryName && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-red-50 text-red-700 border border-red-200">
-                    <Tag className="w-3 h-3" />
-                    {result.criteria.categoryName}
-                  </span>
-                )}
-                {result.criteria?.locality && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-black text-white">
-                    <MapPin className="w-3 h-3" />
-                    {result.criteria.locality}
-                  </span>
-                )}
-                {result.criteria?.maxBudget && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-neutral-100 text-neutral-900 border border-neutral-300">
-                    ₹ Max: {result.criteria.maxBudget}
-                  </span>
-                )}
-              </div>
-
-              <p className="text-xs text-neutral-700 font-medium italic pt-1">
-                "{result.explanation}"
-              </p>
-            </div>
-
-            {/* Results Grid */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <h5 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                  Recommended Businesses ({result.businesses?.length || 0})
-                </h5>
-                <span className="text-[11px] text-slate-400">
-                  Ranked by proximity & match relevance
-                </span>
-              </div>
-
-              {result.businesses?.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[380px] overflow-y-auto pr-1">
-                  {result.businesses.map((biz) => (
-                    <div key={biz.id} onClick={onClose}>
-                      <BusinessCard business={biz} />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="p-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                  <p className="text-xs text-slate-500 mb-2">
-                    No verified businesses found matching this specific criteria.
-                  </p>
+            {/* 1. Platform Knowledge Card (if general platform/guide question) */}
+            {result.isKnowledge ? (
+              <div className="p-5 rounded-2xl bg-neutral-900 text-white border border-neutral-800 space-y-4 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-red-500">
+                    <HelpCircle className="w-4 h-4" />
+                    <span>{result.title || 'Nearzy Assistant Answer'}</span>
+                  </div>
                   <button
-                    onClick={() => handleSearch('Find best service in sivagangai')}
-                    className="text-xs font-bold text-red-600 hover:underline"
+                    onClick={handleReset}
+                    className="text-xs text-neutral-400 hover:text-white font-bold"
                   >
-                    Try searching for best service in sivagangai
+                    New Search
                   </button>
                 </div>
-              )}
-            </div>
+
+                <div className="text-xs sm:text-sm text-neutral-200 whitespace-pre-line leading-relaxed font-medium">
+                  {result.explanation}
+                </div>
+
+                {/* Quick Action Links */}
+                {result.links && result.links.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral-800">
+                    {result.links.map((link, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          onClose()
+                          navigate(link.path)
+                        }}
+                        className="px-3.5 py-2 rounded-xl bg-red-600 hover:bg-white hover:text-black text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+                      >
+                        <span>{link.label}</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Support Contact Reminder */}
+                <div className="pt-2 text-[11px] text-neutral-400 flex flex-wrap items-center gap-4">
+                  <span className="flex items-center gap-1">
+                    <Phone className="w-3 h-3 text-red-500" />
+                    +91 88386 97749
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Mail className="w-3 h-3 text-red-500" />
+                    jothikap56@gmail.com
+                  </span>
+                </div>
+              </div>
+            ) : (
+              /* 2. Service Intent Criteria Badges */
+              <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-black uppercase tracking-wider text-neutral-600">
+                    {t('aiInterpretedIntent')}
+                  </span>
+                  <button
+                    onClick={handleReset}
+                    className="text-xs text-red-600 hover:underline font-bold"
+                  >
+                    New AI Search
+                  </button>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  {result.criteria?.categoryName && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-red-50 text-red-700 border border-red-200">
+                      <Tag className="w-3 h-3" />
+                      {result.criteria.categoryName}
+                    </span>
+                  )}
+                  {result.criteria?.locality && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-black text-white">
+                      <MapPin className="w-3 h-3" />
+                      {result.criteria.locality}
+                    </span>
+                  )}
+                  {result.criteria?.maxBudget && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-neutral-100 text-neutral-900 border border-neutral-300">
+                      ₹ Max: {result.criteria.maxBudget}
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-xs text-neutral-700 font-medium italic pt-1">
+                  "{result.explanation}"
+                </p>
+              </div>
+            )}
+
+            {/* Results Grid for Businesses */}
+            {result.businesses && (
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h5 className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                    Recommended Providers ({result.businesses?.length || 0})
+                  </h5>
+                  <span className="text-[11px] text-slate-400">
+                    Ranked by proximity & match relevance
+                  </span>
+                </div>
+
+                {result.businesses?.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[380px] overflow-y-auto pr-1">
+                    {result.businesses.map((biz) => (
+                      <div key={biz.id} onClick={onClose}>
+                        <BusinessCard business={biz} />
+                      </div>
+                    ))}
+                  </div>
+                ) : !result.isKnowledge ? (
+                  <div className="p-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                    <p className="text-xs text-slate-500 mb-2">
+                      No verified businesses found matching this specific criteria.
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
+                      <button
+                        onClick={() => handleSearch('Show all services in kkdi')}
+                        className="text-xs font-bold text-red-600 hover:underline px-2.5 py-1 rounded-lg bg-red-50"
+                      >
+                        Try: "Show all services in kkdi"
+                      </button>
+                      <button
+                        onClick={() => handleSearch('Emergency plumber in Karaikudi')}
+                        className="text-xs font-bold text-black hover:underline px-2.5 py-1 rounded-lg bg-neutral-100"
+                      >
+                        Try: "Emergency plumber in Karaikudi"
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
 
 export function LoginPage() {
-  const { signIn, switchDemoRole } = useAuth()
+  const { signIn } = useAuth()
   const toast = useToast()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -91,12 +91,6 @@ export function LoginPage() {
     } finally {
       setLoading(false)
     }
-  }
-
-  const handleInstantDemoLogin = () => {
-    switchDemoRole(activeRole)
-    toast.success(`Logged in to ${currentConfig.title}!`)
-    navigate(redirectUrl || currentConfig.targetPath)
   }
 
   return (
@@ -221,22 +215,6 @@ export function LoginPage() {
             <ArrowRight className="w-4 h-4" />
           </button>
         </form>
-
-        {/* 1-Click Instant Role Login */}
-        <div className="pt-4 border-t border-neutral-100 space-y-3">
-          <div className="text-center">
-            <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-wider block mb-2">
-              Instant One-Click Login
-            </span>
-            <button
-              type="button"
-              onClick={handleInstantDemoLogin}
-              className="w-full py-2.5 px-4 rounded-xl border-2 border-black bg-black hover:bg-neutral-800 text-white font-bold text-xs transition flex items-center justify-center gap-2 shadow-sm"
-            >
-              <span>Instant 1-Click Access as {currentConfig.title}</span>
-            </button>
-          </div>
-        </div>
 
         {/* Footer links */}
         <div className="text-center pt-2 text-xs text-neutral-600 flex items-center justify-center gap-2">

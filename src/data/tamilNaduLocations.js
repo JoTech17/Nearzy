@@ -3,16 +3,16 @@
 
 export const TAMIL_NADU_LOCATIONS = [
   // Sivaganga District (including Karaikudi, Sekkalai, Kalanivasal, Devakottai, Tiruppattur)
-  { id: 'karaikudi', name: 'Karaikudi', nameTa: 'காரைக்குடி', district: 'Sivaganga', lat: 10.0718, lng: 78.7844, postal: '630001', aliases: ['karaikudi', 'காரைக்குடி', 'chettinad', 'செட்டிநாடு', 'karaikkudi'] },
-  { id: 'sekkalai-karaikudi', name: 'Sekkalai, Karaikudi', nameTa: 'செக்கலை, காரைக்குடி', district: 'Sivaganga', lat: 10.0718, lng: 78.7844, postal: '630002', aliases: ['sekkalai', 'karaikudi'] },
-  { id: 'kalanivasal-karaikudi', name: 'Kalanivasal, Karaikudi', nameTa: 'கழனிவாசல், காரைக்குடி', district: 'Sivaganga', lat: 10.0650, lng: 78.7720, postal: '630002', aliases: ['kalanivasal', 'karaikudi'] },
-  { id: 'sivaganga', name: 'Sivaganga', nameTa: 'சிவகங்கை', district: 'Sivaganga', lat: 9.8433, lng: 78.4809, postal: '630561', aliases: ['sivaganga', 'sivagangai', 'சிவகங்கை'] },
-  { id: 'devakottai', name: 'Devakottai', nameTa: 'தேவகோட்டை', district: 'Sivaganga', lat: 9.9482, lng: 78.8242, postal: '630302', aliases: ['devakottai', 'தேவகோட்டை'] },
-  { id: 'tiruppattur-sivaganga', name: 'Tiruppattur, Sivaganga', nameTa: 'திருப்பத்தூர், சிவகங்கை', district: 'Sivaganga', lat: 10.1130, lng: 78.6015, postal: '630211', aliases: ['tiruppattur', 'thiruppathur'] },
-  { id: 'manamadurai', name: 'Manamadurai', nameTa: 'மானாமதுரை', district: 'Sivaganga', lat: 9.6974, lng: 78.4485, postal: '630606', aliases: ['manamadurai'] },
+  { id: 'karaikudi', name: 'Karaikudi', nameTa: 'காரைக்குடி', district: 'Sivaganga', lat: 10.0718, lng: 78.7844, postal: '630001', aliases: ['karaikudi', 'kkdi', 'kdi', 'காரைக்குடி', 'chettinad', 'செட்டிநாடு', 'karaikkudi'] },
+  { id: 'sekkalai-karaikudi', name: 'Sekkalai, Karaikudi', nameTa: 'செக்கலை, காரைக்குடி', district: 'Sivaganga', lat: 10.0718, lng: 78.7844, postal: '630002', aliases: ['sekkalai', 'karaikudi', 'kkdi'] },
+  { id: 'kalanivasal-karaikudi', name: 'Kalanivasal, Karaikudi', nameTa: 'கழனிவாசல், காரைக்குடி', district: 'Sivaganga', lat: 10.0650, lng: 78.7720, postal: '630002', aliases: ['kalanivasal', 'karaikudi', 'kkdi'] },
+  { id: 'sivaganga', name: 'Sivaganga', nameTa: 'சிவகங்கை', district: 'Sivaganga', lat: 9.8433, lng: 78.4809, postal: '630561', aliases: ['sivaganga', 'sivagangai', 'svg', 'சிவகங்கை'] },
+  { id: 'devakottai', name: 'Devakottai', nameTa: 'தேவகோட்டை', district: 'Sivaganga', lat: 9.9482, lng: 78.8242, postal: '630302', aliases: ['devakottai', 'தேவகோட்டை', 'karaikudi'] },
+  { id: 'tiruppattur-sivaganga', name: 'Tiruppattur, Sivaganga', nameTa: 'திருப்பத்தூர், சிவகங்கை', district: 'Sivaganga', lat: 10.1130, lng: 78.6015, postal: '630211', aliases: ['tiruppattur', 'thiruppathur', 'sivaganga'] },
+  { id: 'manamadurai', name: 'Manamadurai', nameTa: 'மானாமதுரை', district: 'Sivaganga', lat: 9.6974, lng: 78.4485, postal: '630606', aliases: ['manamadurai', 'sivaganga'] },
 
   // Chennai & Suburbs
-  { id: 'chennai', name: 'Chennai', nameTa: 'சென்னை', district: 'Chennai', lat: 13.0827, lng: 80.2707, postal: '600001', aliases: ['chennai', 'madras', 'சென்னை'] },
+  { id: 'chennai', name: 'Chennai', nameTa: 'சென்னை', district: 'Chennai', lat: 13.0827, lng: 80.2707, postal: '600001', aliases: ['chennai', 'madras', 'ms', 'mas', 'mds', 'சென்னை'] },
   { id: 'anna-nagar', name: 'Anna Nagar, Chennai', nameTa: 'அண்ணா நகர்', district: 'Chennai', lat: 13.0850, lng: 80.2101, postal: '600040', aliases: ['anna nagar', 'chennai'] },
   { id: 't-nagar', name: 'T. Nagar, Chennai', nameTa: 'தி நகர்', district: 'Chennai', lat: 13.0418, lng: 80.2341, postal: '600017', aliases: ['t nagar', 'thyagaraya nagar', 'chennai'] },
   { id: 'velachery', name: 'Velachery, Chennai', nameTa: 'வேளச்சேரி', district: 'Chennai', lat: 12.9815, lng: 80.2180, postal: '600042', aliases: ['velachery', 'chennai'] },
@@ -25,64 +25,64 @@ export const TAMIL_NADU_LOCATIONS = [
   { id: 'guindy', name: 'Guindy', nameTa: 'கிண்டி', district: 'Chennai', lat: 13.0067, lng: 80.2025, postal: '600032', aliases: ['guindy', 'chennai'] },
 
   // Coimbatore & Kongu Region
-  { id: 'coimbatore', name: 'Coimbatore', nameTa: 'கோயம்புத்தூர்', district: 'Coimbatore', lat: 11.0168, lng: 76.9558, postal: '641001', aliases: ['coimbatore', 'kovai', 'கோயம்புத்தூர்', 'கோவை'] },
-  { id: 'rs-puram', name: 'RS Puram, Coimbatore', nameTa: 'ஆர்.எஸ். புரம்', district: 'Coimbatore', lat: 11.0085, lng: 76.9515, postal: '641002', aliases: ['rs puram', 'r.s. puram', 'coimbatore'] },
-  { id: 'gandhipuram', name: 'Gandhipuram, Coimbatore', nameTa: 'காந்திபுரம்', district: 'Coimbatore', lat: 11.0180, lng: 76.9680, postal: '641012', aliases: ['gandhipuram', 'coimbatore'] },
-  { id: 'peelamedu', name: 'Peelamedu, Coimbatore', nameTa: 'பீளமேடு', district: 'Coimbatore', lat: 11.0310, lng: 77.0180, postal: '641004', aliases: ['peelamedu', 'coimbatore'] },
-  { id: 'saravanampatti', name: 'Saravanampatti, Coimbatore', nameTa: 'சரவணம்பட்டி', district: 'Coimbatore', lat: 11.0820, lng: 76.9980, postal: '641035', aliases: ['saravanampatti', 'coimbatore'] },
-  { id: 'pollachi', name: 'Pollachi', nameTa: 'பொள்ளாச்சி', district: 'Coimbatore', lat: 10.6609, lng: 77.0048, postal: '642001', aliases: ['pollachi', 'coimbatore'] },
-  { id: 'mettur-coimbatore', name: 'Mettupalayam', nameTa: 'மேட்டுப்பாளையம்', district: 'Coimbatore', lat: 11.3000, lng: 76.9500, postal: '641301', aliases: ['mettupalayam', 'coimbatore'] },
+  { id: 'coimbatore', name: 'Coimbatore', nameTa: 'கோயம்புத்தூர்', district: 'Coimbatore', lat: 11.0168, lng: 76.9558, postal: '641001', aliases: ['coimbatore', 'cbe', 'kovai', 'கோயம்புத்தூர்', 'கோவை'] },
+  { id: 'rs-puram', name: 'RS Puram, Coimbatore', nameTa: 'ஆர்.எஸ். புரம்', district: 'Coimbatore', lat: 11.0085, lng: 76.9515, postal: '641002', aliases: ['rs puram', 'r.s. puram', 'coimbatore', 'cbe'] },
+  { id: 'gandhipuram', name: 'Gandhipuram, Coimbatore', nameTa: 'காந்திபுரம்', district: 'Coimbatore', lat: 11.0180, lng: 76.9680, postal: '641012', aliases: ['gandhipuram', 'coimbatore', 'cbe'] },
+  { id: 'peelamedu', name: 'Peelamedu, Coimbatore', nameTa: 'பீளமேடு', district: 'Coimbatore', lat: 11.0310, lng: 77.0180, postal: '641004', aliases: ['peelamedu', 'coimbatore', 'cbe'] },
+  { id: 'saravanampatti', name: 'Saravanampatti, Coimbatore', nameTa: 'சரவணம்பட்டி', district: 'Coimbatore', lat: 11.0820, lng: 76.9980, postal: '641035', aliases: ['saravanampatti', 'coimbatore', 'cbe'] },
+  { id: 'pollachi', name: 'Pollachi', nameTa: 'பொள்ளாச்சி', district: 'Coimbatore', lat: 10.6609, lng: 77.0048, postal: '642001', aliases: ['pollachi', 'coimbatore', 'cbe'] },
+  { id: 'mettur-coimbatore', name: 'Mettupalayam', nameTa: 'மேட்டுப்பாளையம்', district: 'Coimbatore', lat: 11.3000, lng: 76.9500, postal: '641301', aliases: ['mettupalayam', 'coimbatore', 'cbe'] },
 
   // Madurai Region
-  { id: 'madurai', name: 'Madurai', nameTa: 'மதுரை', district: 'Madurai', lat: 9.9252, lng: 78.1198, postal: '625001', aliases: ['madurai', 'madura', 'மதுரை'] },
-  { id: 'tallakulam', name: 'Tallakulam, Madurai', nameTa: 'தல்லாகுளம்', district: 'Madurai', lat: 9.9360, lng: 78.1320, postal: '625002', aliases: ['tallakulam', 'madurai'] },
-  { id: 'anna-nagar-madurai', name: 'Anna Nagar, Madurai', nameTa: 'அண்ணா நகர், மதுரை', district: 'Madurai', lat: 9.9175, lng: 78.1465, postal: '625020', aliases: ['anna nagar madurai', 'madurai'] },
-  { id: 'kk-nagar-madurai', name: 'KK Nagar, Madurai', nameTa: 'கே.கே. நகர், மதுரை', district: 'Madurai', lat: 9.9320, lng: 78.1478, postal: '625020', aliases: ['kk nagar madurai', 'madurai'] },
-  { id: 'mattuthavani', name: 'Mattuthavani, Madurai', nameTa: 'மாட்டுத்தாவணி', district: 'Madurai', lat: 9.9470, lng: 78.1580, postal: '625007', aliases: ['mattuthavani', 'madurai'] },
-  { id: 'tirumangalam', name: 'Tirumangalam', nameTa: 'திருமங்கலம்', district: 'Madurai', lat: 9.8236, lng: 77.9860, postal: '625706', aliases: ['tirumangalam', 'madurai'] },
-  { id: 'melur', name: 'Melur', nameTa: 'மேலூர்', district: 'Madurai', lat: 10.0500, lng: 78.3300, postal: '625106', aliases: ['melur', 'madurai'] },
+  { id: 'madurai', name: 'Madurai', nameTa: 'மதுரை', district: 'Madurai', lat: 9.9252, lng: 78.1198, postal: '625001', aliases: ['madurai', 'mdu', 'madura', 'மதுரை'] },
+  { id: 'tallakulam', name: 'Tallakulam, Madurai', nameTa: 'தல்லாகுளம்', district: 'Madurai', lat: 9.9360, lng: 78.1320, postal: '625002', aliases: ['tallakulam', 'madurai', 'mdu'] },
+  { id: 'anna-nagar-madurai', name: 'Anna Nagar, Madurai', nameTa: 'அண்ணா நகர், மதுரை', district: 'Madurai', lat: 9.9175, lng: 78.1465, postal: '625020', aliases: ['anna nagar madurai', 'madurai', 'mdu'] },
+  { id: 'kk-nagar-madurai', name: 'KK Nagar, Madurai', nameTa: 'கே.கே. நகர், மதுரை', district: 'Madurai', lat: 9.9320, lng: 78.1478, postal: '625020', aliases: ['kk nagar madurai', 'madurai', 'mdu'] },
+  { id: 'mattuthavani', name: 'Mattuthavani, Madurai', nameTa: 'மாட்டுத்தாவணி', district: 'Madurai', lat: 9.9470, lng: 78.1580, postal: '625007', aliases: ['mattuthavani', 'madurai', 'mdu'] },
+  { id: 'tirumangalam', name: 'Tirumangalam', nameTa: 'திருமங்கலம்', district: 'Madurai', lat: 9.8236, lng: 77.9860, postal: '625706', aliases: ['tirumangalam', 'madurai', 'mdu'] },
+  { id: 'melur', name: 'Melur', nameTa: 'மேலூர்', district: 'Madurai', lat: 10.0500, lng: 78.3300, postal: '625106', aliases: ['melur', 'madurai', 'mdu'] },
 
   // Tiruchirappalli (Trichy)
-  { id: 'tiruchirappalli', name: 'Tiruchirappalli (Trichy)', nameTa: 'திருச்சிராப்பள்ளி', district: 'Tiruchirappalli', lat: 10.7905, lng: 78.7047, postal: '620001', aliases: ['trichy', 'tiruchirappalli', 'திருச்சி', 'திருச்சிராப்பள்ளி'] },
-  { id: 'srirangam', name: 'Srirangam', nameTa: 'ஸ்ரீரங்கம்', district: 'Tiruchirappalli', lat: 10.8622, lng: 78.6946, postal: '620006', aliases: ['srirangam', 'trichy'] },
+  { id: 'tiruchirappalli', name: 'Tiruchirappalli (Trichy)', nameTa: 'திருச்சிராப்பள்ளி', district: 'Tiruchirappalli', lat: 10.7905, lng: 78.7047, postal: '620001', aliases: ['trichy', 'tpj', 'tiruchirappalli', 'tiruchi', 'திருச்சி', 'திருச்சிராப்பள்ளி'] },
+  { id: 'srirangam', name: 'Srirangam', nameTa: 'ஸ்ரீரங்கம்', district: 'Tiruchirappalli', lat: 10.8622, lng: 78.6946, postal: '620006', aliases: ['srirangam', 'trichy', 'tpj'] },
 
   // Salem
-  { id: 'salem', name: 'Salem', nameTa: 'சேலம்', district: 'Salem', lat: 11.6643, lng: 78.1460, postal: '636001', aliases: ['salem', 'சேலம்'] },
+  { id: 'salem', name: 'Salem', nameTa: 'சேலம்', district: 'Salem', lat: 11.6643, lng: 78.1460, postal: '636001', aliases: ['salem', 'சேலம்', 'slm'] },
   { id: 'attur', name: 'Attur', nameTa: 'ஆத்தூர்', district: 'Salem', lat: 11.5977, lng: 78.6015, postal: '636102', aliases: ['attur', 'salem'] },
 
   // Tiruppur & Erode
-  { id: 'tiruppur', name: 'Tiruppur', nameTa: 'திருப்பூர்', district: 'Tiruppur', lat: 11.1085, lng: 77.3411, postal: '641601', aliases: ['tiruppur', 'tirupur', 'திருப்பூர்'] },
+  { id: 'tiruppur', name: 'Tiruppur', nameTa: 'திருப்பூர்', district: 'Tiruppur', lat: 11.1085, lng: 77.3411, postal: '641601', aliases: ['tiruppur', 'tirupur', 'tpr', 'திருப்பூர்'] },
   { id: 'udumalaipettai', name: 'Udumalaipettai', nameTa: 'உடுமலைப்பேட்டை', district: 'Tiruppur', lat: 10.5855, lng: 77.2492, postal: '642126', aliases: ['udumalaipettai', 'tiruppur'] },
-  { id: 'erode', name: 'Erode', nameTa: 'ஈரோடு', district: 'Erode', lat: 11.3410, lng: 77.7172, postal: '638001', aliases: ['erode', 'ஈரோடு'] },
+  { id: 'erode', name: 'Erode', nameTa: 'ஈரோடு', district: 'Erode', lat: 11.3410, lng: 77.7172, postal: '638001', aliases: ['erode', 'ed', 'ஈரோடு'] },
   { id: 'gobichettipalayam', name: 'Gobichettipalayam', nameTa: 'கோபிசெட்டிபாளையம்', district: 'Erode', lat: 11.4552, lng: 77.4373, postal: '638452', aliases: ['gobi', 'gobichettipalayam', 'erode'] },
 
   // Tirunelveli, Tenkasi & Thoothukudi
-  { id: 'tirunelveli', name: 'Tirunelveli', nameTa: 'திருநெல்வேலி', district: 'Tirunelveli', lat: 8.7139, lng: 77.7567, postal: '627001', aliases: ['tirunelveli', 'nellai', 'திருநெல்வேலி', 'நெல்லை'] },
+  { id: 'tirunelveli', name: 'Tirunelveli', nameTa: 'திருநெல்வேலி', district: 'Tirunelveli', lat: 8.7139, lng: 77.7567, postal: '627001', aliases: ['tirunelveli', 'nellai', 'tny', 'திருநெல்வேலி', 'நெல்லை'] },
   { id: 'tenkasi', name: 'Tenkasi', nameTa: 'தென்காசி', district: 'Tenkasi', lat: 8.9594, lng: 77.3150, postal: '627811', aliases: ['tenkasi', 'தென்காசி', 'courtallam'] },
-  { id: 'thoothukudi', name: 'Thoothukudi (Tuticorin)', nameTa: 'தூத்துக்குடி', district: 'Thoothukudi', lat: 8.7642, lng: 78.1348, postal: '628001', aliases: ['thoothukudi', 'tuticorin', 'தூத்துக்குடி'] },
+  { id: 'thoothukudi', name: 'Thoothukudi (Tuticorin)', nameTa: 'தூத்துக்குடி', district: 'Thoothukudi', lat: 8.7642, lng: 78.1348, postal: '628001', aliases: ['thoothukudi', 'tuticorin', 'tcn', 'தூத்துக்குடி'] },
   { id: 'kovilpatti', name: 'Kovilpatti', nameTa: 'கோவில்பட்டி', district: 'Thoothukudi', lat: 9.1728, lng: 77.8687, postal: '628501', aliases: ['kovilpatti', 'thoothukudi'] },
 
   // Kanyakumari
-  { id: 'kanyakumari', name: 'Kanyakumari (Nagercoil)', nameTa: 'கன்னியாகுமரி', district: 'Kanyakumari', lat: 8.1833, lng: 77.4119, postal: '629001', aliases: ['kanyakumari', 'nagercoil', 'கன்னியாகுமரி', 'நாகர்கோவில்'] },
+  { id: 'kanyakumari', name: 'Kanyakumari (Nagercoil)', nameTa: 'கன்னியாகுமரி', district: 'Kanyakumari', lat: 8.1833, lng: 77.4119, postal: '629001', aliases: ['kanyakumari', 'nagercoil', 'ngl', 'கன்னியாகுமரி', 'நாகர்கோவில்'] },
 
   // Thanjavur & Delta Region
-  { id: 'thanjavur', name: 'Thanjavur', nameTa: 'தஞ்சாவூர்', district: 'Thanjavur', lat: 10.7870, lng: 79.1378, postal: '613001', aliases: ['thanjavur', 'tanjore', 'தஞ்சாவூர்'] },
+  { id: 'thanjavur', name: 'Thanjavur', nameTa: 'தஞ்சாவூர்', district: 'Thanjavur', lat: 10.7870, lng: 79.1378, postal: '613001', aliases: ['thanjavur', 'tanjore', 'tnj', 'தஞ்சாவூர்'] },
   { id: 'kumbakonam', name: 'Kumbakonam', nameTa: 'கும்பகோணம்', district: 'Thanjavur', lat: 10.9602, lng: 79.3845, postal: '612001', aliases: ['kumbakonam', 'thanjavur'] },
   { id: 'mayiladuthurai', name: 'Mayiladuthurai', nameTa: 'மயிலாடுதுறை', district: 'Mayiladuthurai', lat: 11.1075, lng: 79.6522, postal: '609001', aliases: ['mayiladuthurai', 'mayavaram', 'மயிலாடுதுறை'] },
   { id: 'nagapattinam', name: 'Nagapattinam', nameTa: 'நாகப்பட்டினம்', district: 'Nagapattinam', lat: 10.7656, lng: 79.8424, postal: '611001', aliases: ['nagapattinam', 'நாகப்பட்டினம்'] },
   { id: 'tiruvarur', name: 'Tiruvarur', nameTa: 'திருவாரூர்', district: 'Tiruvarur', lat: 10.7725, lng: 79.6365, postal: '610001', aliases: ['tiruvarur', 'thiruvarur', 'திருவாரூர்'] },
-  { id: 'pudukkottai', name: 'Pudukkottai', nameTa: 'புதுக்கோட்டை', district: 'Pudukkottai', lat: 10.3797, lng: 78.8208, postal: '622001', aliases: ['pudukkottai', 'புதுக்கோட்டை'] },
+  { id: 'pudukkottai', name: 'Pudukkottai', nameTa: 'புதுக்கோட்டை', district: 'Pudukkottai', lat: 10.3797, lng: 78.8208, postal: '622001', aliases: ['pudukkottai', 'pkk', 'புதுக்கோட்டை'] },
 
   // Dindigul & Theni
-  { id: 'dindigul', name: 'Dindigul', nameTa: 'திண்டுக்கல்', district: 'Dindigul', lat: 10.3673, lng: 77.9803, postal: '624001', aliases: ['dindigul', 'திண்டுக்கல்'] },
+  { id: 'dindigul', name: 'Dindigul', nameTa: 'திண்டுக்கல்', district: 'Dindigul', lat: 10.3673, lng: 77.9803, postal: '624001', aliases: ['dindigul', 'dgl', 'திண்டுக்கல்'] },
   { id: 'palani', name: 'Palani', nameTa: 'பழனி', district: 'Dindigul', lat: 10.4500, lng: 77.5167, postal: '624601', aliases: ['palani', 'dindigul'] },
   { id: 'theni', name: 'Theni', nameTa: 'தேனி', district: 'Theni', lat: 10.0104, lng: 77.4768, postal: '625531', aliases: ['theni', 'தேனி', 'bodinayakanur'] },
 
   // Virudhunagar & Ramanathapuram
-  { id: 'virudhunagar', name: 'Virudhunagar', nameTa: 'விருதுநகர்', district: 'Virudhunagar', lat: 9.5680, lng: 77.9624, postal: '626001', aliases: ['virudhunagar', 'விருதுநகர்'] },
+  { id: 'virudhunagar', name: 'Virudhunagar', nameTa: 'விருதுநகர்', district: 'Virudhunagar', lat: 9.5680, lng: 77.9624, postal: '626001', aliases: ['virudhunagar', 'vnr', 'விருதுநகர்'] },
   { id: 'sivakasi', name: 'Sivakasi', nameTa: 'சிவகாசி', district: 'Virudhunagar', lat: 9.4533, lng: 77.7972, postal: '626123', aliases: ['sivakasi', 'virudhunagar'] },
   { id: 'rajapalayam', name: 'Rajapalayam', nameTa: 'ராஜபாளையம்', district: 'Virudhunagar', lat: 9.4532, lng: 77.5545, postal: '626117', aliases: ['rajapalayam', 'virudhunagar'] },
-  { id: 'ramanathapuram', name: 'Ramanathapuram', nameTa: 'இராமநாதபுரம்', district: 'Ramanathapuram', lat: 9.3639, lng: 78.8395, postal: '623501', aliases: ['ramanathapuram', 'ramnad', 'இராமநாதபுரம்'] },
+  { id: 'ramanathapuram', name: 'Ramanathapuram', nameTa: 'இராமநாதபுரம்', district: 'Ramanathapuram', lat: 9.3639, lng: 78.8395, postal: '623501', aliases: ['ramanathapuram', 'ramnad', 'rmd', 'இராமநாதபுரம்'] },
   { id: 'rameswaram', name: 'Rameswaram', nameTa: 'இராமேஸ்வரம்', district: 'Ramanathapuram', lat: 9.2876, lng: 79.3129, postal: '623526', aliases: ['rameswaram', 'ramanathapuram'] },
 
   // Vellore, Tirupathur, Ranipet
@@ -135,13 +135,14 @@ function clean(str) {
 }
 
 /**
- * Resolve location query with alias mapping, district matching and fuzzy search
+ * Resolve location query with alias mapping, district matching, token parsing and fuzzy search
  */
 export function resolveLocation(query) {
   if (!query) return null
   const q = clean(query)
+  if (!q) return null
 
-  // 1. Direct ID or Name match
+  // 1. Direct ID, Name, NameTa or District exact match
   const exact = TAMIL_NADU_LOCATIONS.find(l => 
     l.id === q || 
     clean(l.name) === q || 
@@ -150,20 +151,54 @@ export function resolveLocation(query) {
   )
   if (exact) return exact
 
-  // 2. Check aliases (e.g., 'sivagangai' matches 'sivaganga', 'karaikudi', 'trichy', 'kovai')
-  const aliasMatch = TAMIL_NADU_LOCATIONS.find(l => 
-    l.aliases?.some(a => a === q || q.includes(a) || a.includes(q))
+  // 2. Direct exact alias match (e.g. q === 'kkdi' or q === 'cbe' or q === 'sivagangai')
+  const directAlias = TAMIL_NADU_LOCATIONS.find(l => 
+    l.aliases?.some(a => clean(a) === q)
   )
-  if (aliasMatch) return aliasMatch
+  if (directAlias) return directAlias
 
-  // 3. Substring match
-  const subMatch = TAMIL_NADU_LOCATIONS.find(l => 
-    clean(l.name).includes(q) || 
-    q.includes(clean(l.name)) ||
-    clean(l.district).includes(q) ||
-    q.includes(clean(l.district))
-  )
-  if (subMatch) return subMatch
+  // 3. Word token check: extract tokens from natural language sentences
+  // e.g. "show all services in kkdi" -> tokens: ["show", "all", "services", "in", "kkdi"]
+  const words = q.split(' ').filter(w => w.length >= 2)
+  const skipWords = new Set(['all', 'in', 'at', 'near', 'show', 'the', 'and', 'for', 'best', 'top', 'any', 'service', 'services', 'find', 'me', 'to', 'of'])
+  
+  for (const word of words) {
+    if (skipWords.has(word)) continue
+    
+    // Check if single word matches an alias or location name exactly
+    const tokenMatch = TAMIL_NADU_LOCATIONS.find(l =>
+      l.id === word ||
+      clean(l.name) === word ||
+      clean(l.district) === word ||
+      l.aliases?.some(a => clean(a) === word)
+    )
+    if (tokenMatch) return tokenMatch
+  }
+
+  // 4. Two-word phrase check (e.g. "anna nagar", "rs puram", "mattuthavani")
+  for (let i = 0; i < words.length - 1; i++) {
+    const phrase = `${words[i]} ${words[i+1]}`
+    const phraseMatch = TAMIL_NADU_LOCATIONS.find(l =>
+      clean(l.name) === phrase ||
+      l.aliases?.some(a => clean(a) === phrase)
+    )
+    if (phraseMatch) return phraseMatch
+  }
+
+  // 5. Substring / phrase match (e.g., sentence contains "karaikudi" or "sivaganga")
+  for (const l of TAMIL_NADU_LOCATIONS) {
+    const locName = clean(l.name)
+    const locDistrict = clean(l.district)
+    if (locName && q.includes(locName)) return l
+    if (locDistrict && q.includes(locDistrict)) return l
+    
+    if (l.aliases?.some(a => {
+      const ca = clean(a)
+      return ca.length >= 3 && (new RegExp(`\\b${ca}\\b`, 'i').test(q) || q.includes(ca))
+    })) {
+      return l
+    }
+  }
 
   return null
 }
