@@ -7,7 +7,7 @@ import {
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
 
-export function Navbar({ onOpenAiModal }) {
+export function Navbar({ onOpenAiModal, onOpenAuthModal }) {
   const { t, language, toggleLanguage } = useLanguage()
   const { user, signOut, isAdmin, isBusinessOwner } = useAuth()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -229,7 +229,7 @@ export function Navbar({ onOpenAiModal }) {
                   {t('navLogin')}
                 </Link>
                 <Link
-                  to="/login"
+                  to="/register"
                   className="px-4 py-2 rounded-xl bg-black hover:bg-neutral-800 text-white font-bold text-xs shadow-sm transition"
                 >
                   {t('navSignUp')}
@@ -347,7 +347,7 @@ export function Navbar({ onOpenAiModal }) {
                   {t('navLogin')}
                 </Link>
                 <Link
-                  to="/login"
+                  to="/register"
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-center py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold"
                 >

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { 
   Calendar, Heart, Clock, Star, Bell, User, 
   MapPin, Phone, CheckCircle, XCircle, AlertCircle, 
@@ -21,6 +21,7 @@ export function CustomerDashboard() {
   const { t } = useLanguage()
   const { user, updateProfile } = useAuth()
   const toast = useToast()
+  const navigate = useNavigate()
 
   const [activeTab, setActiveTab] = useState('bookings') // 'bookings' | 'favorites' | 'profile'
   const [bookings, setBookings] = useState([])
@@ -36,6 +37,7 @@ export function CustomerDashboard() {
     async function loadData() {
       if (!user) {
         setLoading(false)
+        navigate('/login?role=customer&redirect=/dashboard')
         return
       }
       setLoading(true)

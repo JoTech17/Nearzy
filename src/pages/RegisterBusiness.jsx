@@ -23,15 +23,15 @@ export function RegisterBusinessPage() {
     name: '',
     categoryId: '',
     description: '',
-    locality: 'Karaikudi',
-    city: 'Sivaganga',
-    district: 'Sivaganga',
-    locationDisplay: 'Karaikudi, Sivaganga',
-    latitude: 10.0718,
-    longitude: 78.7844,
-    address: 'Karaikudi, Sivaganga District, Tamil Nadu - 630001',
+    locality: '',
+    city: '',
+    district: '',
+    locationDisplay: '',
+    latitude: null,
+    longitude: null,
+    address: '',
     doorNo: '',
-    postalCode: '630001',
+    postalCode: '',
     phone: user?.phone || '+91 ',
     email: user?.email || '',
     website: '',
@@ -47,6 +47,7 @@ export function RegisterBusinessPage() {
     async function checkUserBusiness() {
       if (!user) {
         setCheckingExisting(false)
+        navigate('/login?role=business_owner&redirect=/register-business')
         return
       }
       try {
@@ -61,7 +62,7 @@ export function RegisterBusinessPage() {
       }
     }
     checkUserBusiness()
-  }, [user])
+  }, [user, navigate])
 
   useEffect(() => {
     async function load() {

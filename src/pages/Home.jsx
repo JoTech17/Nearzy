@@ -21,7 +21,7 @@ export function Home({ onOpenAiModal }) {
   const [categories, setCategories] = useState([])
   const [allBusinesses, setAllBusinesses] = useState([])
   const [featuredBusinesses, setFeaturedBusinesses] = useState([])
-  const [mapLocation, setMapLocation] = useState(TAMIL_NADU_LOCATIONS[0]) // Default Chennai
+  const [mapLocation, setMapLocation] = useState(null) // No default location (Shows all Tamil Nadu)
   const [loading, setLoading] = useState(true)
 
   // Search hero state
@@ -58,6 +58,10 @@ export function Home({ onOpenAiModal }) {
 
   // Handle map location switch (e.g. user selects a district or clicks on the map)
   const handleMapLocationChange = (locId) => {
+    if (!locId) {
+      setMapLocation(null)
+      return
+    }
     const loc = TAMIL_NADU_LOCATIONS.find(l => l.id === locId || l.name === locId)
     if (loc) {
       setMapLocation(loc)
@@ -204,16 +208,17 @@ export function Home({ onOpenAiModal }) {
             {/* Quick District Picker */}
             <div className="flex items-center gap-2">
               <label className="text-xs font-bold text-neutral-800 whitespace-nowrap">
-                Select District:
+                Select District / Town:
               </label>
               <select
                 value={mapLocation?.id || ''}
                 onChange={(e) => handleMapLocationChange(e.target.value)}
                 className="px-3.5 py-2 rounded-xl border border-neutral-300 text-xs font-bold text-neutral-900 bg-neutral-50 outline-none cursor-pointer focus:border-red-600"
               >
+                <option value="">-- All Tamil Nadu (Select District / Town) --</option>
                 {TAMIL_NADU_LOCATIONS.map((loc) => (
                   <option key={loc.id} value={loc.id}>
-                    {loc.name}
+                    {loc.name} ({loc.district})
                   </option>
                 ))}
               </select>
@@ -233,10 +238,18 @@ export function Home({ onOpenAiModal }) {
           <div className="pt-2">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-bold text-neutral-900">
-                Services Within 30 km of <span className="text-red-600 font-extrabold">{mapLocation?.name}</span> ({mapProvidersWithin30Km.length} providers found)
+                {mapLocation ? (
+                  <>
+                    Services Within 30 km of <span className="text-red-600 font-extrabold">{mapLocation.name}</span> ({mapProvidersWithin30Km.length} providers found)
+                  </>
+                ) : (
+                  <>
+                    Tamil Nadu Verified Service Providers <span className="text-neutral-500 font-normal">({allBusinesses.length} providers statewide • Select any district or pin)</span>
+                  </>
+                )}
               </h3>
               <Link
-                to={`/search?locality=${encodeURIComponent(mapLocation?.name || '')}`}
+                to={mapLocation ? `/search?locality=${encodeURIComponent(mapLocation.name)}` : '/search'}
                 className="text-xs font-bold text-red-600 hover:text-black flex items-center gap-1"
               >
                 View all in Search →

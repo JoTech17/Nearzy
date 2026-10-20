@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { 
   Briefcase, Calendar, Star, DollarSign, Clock, 
   CheckCircle2, XCircle, Plus, Edit2, Trash2, MessageSquare, 
@@ -23,6 +23,7 @@ import {
 export function OwnerDashboard() {
   const { user } = useAuth()
   const toast = useToast()
+  const navigate = useNavigate()
 
   const [activeTab, setActiveTab] = useState('bookings') // 'bookings' | 'services' | 'reviews'
   const [business, setBusiness] = useState(null)
@@ -62,6 +63,11 @@ export function OwnerDashboard() {
 
   useEffect(() => {
     async function loadOwnerData() {
+      if (!user) {
+        setLoading(false)
+        navigate('/login?role=business_owner&redirect=/owner-dashboard')
+        return
+      }
       setLoading(true)
       try {
         // Query business strictly belonging to this logged in partner

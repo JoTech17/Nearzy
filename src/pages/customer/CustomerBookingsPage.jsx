@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { 
   Calendar, Clock, MapPin, Phone, CheckCircle2, 
   XCircle, AlertCircle, ArrowRight, User, ShieldCheck, 
@@ -12,6 +12,7 @@ import { getCustomerBookings, updateBookingStatus } from '@/services/businessSer
 export function CustomerBookingsPage() {
   const { user } = useAuth()
   const toast = useToast()
+  const navigate = useNavigate()
 
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
@@ -23,6 +24,7 @@ export function CustomerBookingsPage() {
   const loadBookings = async () => {
     if (!user) {
       setLoading(false)
+      navigate('/login?role=customer&redirect=/my-bookings')
       return
     }
     setLoading(true)

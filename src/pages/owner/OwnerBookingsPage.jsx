@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { 
   Briefcase, Calendar, Clock, MapPin, Phone, Mail, 
   CheckCircle2, XCircle, AlertCircle, RefreshCw, Filter, 
@@ -12,6 +12,7 @@ import { getOwnerBusiness, getOwnerBookings, updateBookingStatus } from '@/servi
 export function OwnerBookingsPage() {
   const { user } = useAuth()
   const toast = useToast()
+  const navigate = useNavigate()
 
   const [business, setBusiness] = useState(null)
   const [bookings, setBookings] = useState([])
@@ -22,6 +23,7 @@ export function OwnerBookingsPage() {
   const loadData = async () => {
     if (!user) {
       setLoading(false)
+      navigate('/login?role=business_owner&redirect=/owner/bookings')
       return
     }
     setLoading(true)

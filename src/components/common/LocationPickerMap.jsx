@@ -53,16 +53,25 @@ function MapClickHandler({ onSelectCoords }) {
  * Replaces manual address writing with map-based pin selection
  */
 export function LocationPickerMap({
-  initialLat = 10.0718, // Default Karaikudi / Tamil Nadu
-  initialLng = 78.7844,
+  initialLat = null,
+  initialLng = null,
   onLocationChange,
   height = '380px',
   label = 'Select Your Shop / Service Location on Map *'
 }) {
-  const [position, setPosition] = useState([initialLat, initialLng])
-  const [zoomLevel, setZoomLevel] = useState(13)
+  const defaultCenter = [11.1271, 78.6569] // Tamil Nadu Geographic Center (No default city)
+  const [position, setPosition] = useState(
+    initialLat && initialLng ? [initialLat, initialLng] : defaultCenter
+  )
+  const [hasPicked, setHasPicked] = useState(Boolean(initialLat && initialLng))
+  const [zoomLevel, setZoomLevel] = useState(initialLat && initialLng ? 13 : 7)
   const [locatingUser, setLocatingUser] = useState(false)
-  const [selectedTownInfo, setSelectedTownInfo] = useState(null)
+  const [selectedTownInfo, setSelectedTownInfo] = useState(() => {
+    if (initialLat && initialLng) {
+      return findNearestLocation(initialLat, initialLng)
+    }
+    return null
+  })
   const markerRef = useRef(null)
 
   // Update position if initial coordinates change externally
@@ -71,6 +80,7 @@ export function LocationPickerMap({
       setPosition([initialLat, initialLng])
       const nearest = findNearestLocation(initialLat, initialLng)
       setSelectedTownInfo(nearest)
+      setHasPicked(true)
     }
   }, [initialLat, initialLng])
 
@@ -239,20 +249,30 @@ export function LocationPickerMap({
           </div>
           <div>
             <div className="font-extrabold text-black flex items-center gap-1.5">
-              <span>{selectedTownInfo?.location?.name || 'Karaikudi'}, {selectedTownInfo?.location?.district || 'Sivaganga'}</span>
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-800">
-                30 km Coverage
+              <span>
+                {selectedTownInfo?.location
+                  ? `${selectedTownInfo.location.name}, ${selectedTownInfo.location.district}`
+                  : 'Click on the map or search a town above to set shop location'}
               </span>
+              {selectedTownInfo && (
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-red-100 text-red-800">
+                  30 km Coverage
+                </span>
+              )}
             </div>
             <div className="text-[11px] text-neutral-500 font-medium">
-              GPS Coordinates: <strong className="text-neutral-800">{position[0]}, {position[1]}</strong>
+              {hasPicked ? (
+                <>GPS Coordinates: <strong className="text-neutral-800">{position[0]?.toFixed?.(4) || position[0]}, {position[1]?.toFixed?.(4) || position[1]}</strong></>
+              ) : (
+                <span className="text-neutral-400">No location chosen yet</span>
+              )}
             </div>
           </div>
         </div>
 
         <div className="flex items-center gap-1 text-[11px] font-bold text-neutral-600 sm:self-center">
-          <CheckCircle2 className="w-3.5 h-3.5 text-red-600" />
-          <span>Location locked for Tamil Nadu map</span>
+          <CheckCircle2 className={`w-3.5 h-3.5 ${hasPicked ? 'text-red-600' : 'text-neutral-300'}`} />
+          <span>{hasPicked ? 'Location selected on Tamil Nadu map' : 'Select a location on map'}</span>
         </div>
       </div>
     </div>
