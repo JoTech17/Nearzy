@@ -23,6 +23,7 @@ const REPORTS_KEY = 'nearzy_reports_store'
 
 function getStored(key, fallback) {
   try {
+    if (typeof localStorage === 'undefined') return fallback
     const item = localStorage.getItem(key)
     return item ? JSON.parse(item) : fallback
   } catch {
@@ -32,9 +33,10 @@ function getStored(key, fallback) {
 
 function setStored(key, value) {
   try {
+    if (typeof localStorage === 'undefined') return
     localStorage.setItem(key, JSON.stringify(value))
   } catch (e) {
-    console.error('Local storage write failed', e)
+    // Ignore storage write errors
   }
 }
 
@@ -199,22 +201,27 @@ export async function searchBusinesses({
     }))
 
     // Filter within 30km radius
-    const within30 = results.filter(b => b.distanceKm <= radiusKm)
-    if (within30.length > 0) {
-      results = within30
+    const withinRadius = results.filter(b => b.distanceKm <= radiusKm)
+    if (withinRadius.length > 0) {
+      results = withinRadius
     } else {
-      // Never leave any place without service providers: sort by closest distance
+      // Fallback: take closest providers up to 45km
       results.sort((a, b) => a.distanceKm - b.distanceKm)
-      results = results.slice(0, 20)
+      results = results.slice(0, 15)
     }
+
+    // Always sort by closest distance
+    results.sort((a, b) => a.distanceKm - b.distanceKm)
+    results = results.slice(0, 20)
   } else if (locality) {
     const locLower = locality.toLowerCase().trim()
     const filtered = results.filter(b => 
       b.locality?.toLowerCase().includes(locLower) || 
-      b.city?.toLowerCase().includes(locLower)
+      b.city?.toLowerCase().includes(locLower) ||
+      b.district?.toLowerCase()?.includes(locLower)
     )
     if (filtered.length > 0) {
-      results = filtered
+      results = filtered.slice(0, 20)
     }
   }
 
@@ -239,7 +246,14 @@ export async function searchBusinesses({
   }
 
   // Sorting
-  if (sortBy === 'rating') {
+  if (targetLat && targetLng && (sortBy === 'distance' || sortBy === 'relevance' || sortBy === 'rating')) {
+    // Proximity first, tie-break by rating
+    results.sort((a, b) => {
+      const distDiff = (a.distanceKm || 0) - (b.distanceKm || 0)
+      if (Math.abs(distDiff) > 3) return distDiff
+      return (b.rating || 0) - (a.rating || 0)
+    })
+  } else if (sortBy === 'rating') {
     results.sort((a, b) => (b.rating || 0) - (a.rating || 0))
   } else if (sortBy === 'reviews') {
     results.sort((a, b) => (b.reviewCount || 0) - (a.reviewCount || 0))
@@ -252,7 +266,7 @@ export async function searchBusinesses({
     results.sort((a, b) => ((b.rating || 0) * (b.reviewCount || 1)) - ((a.rating || 0) * (a.reviewCount || 1)))
   }
 
-  return results
+  return results.slice(0, limit)
 }
 
 // 3. Get Single Business By Slug

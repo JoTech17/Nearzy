@@ -37,9 +37,9 @@ export function Navbar({ onOpenAiModal, onOpenAuthModal }) {
           {/* Logo & Tagline (Red, White & Black) */}
           <Link to="/" className="flex items-center gap-3 group">
             <img 
-              src="/logo.svg" 
+              src="/logo.png" 
               alt="Nearzy Logo" 
-              className="w-10 h-10 rounded-xl group-hover:scale-105 transition-transform duration-200" 
+              className="w-10 h-10 object-contain rounded-xl group-hover:scale-105 transition-transform duration-200" 
             />
             <div className="flex flex-col">
               <span className="text-2xl font-black tracking-tight text-black flex items-center gap-0.5">

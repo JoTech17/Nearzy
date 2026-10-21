@@ -199,6 +199,51 @@ export function AIAssistantModal({ isOpen, onClose }) {
                   </span>
                 </div>
               </div>
+            ) : result.needsLocation ? (
+              /* Location Request Card with clickable chips */
+              <div className="p-5 rounded-2xl bg-neutral-900 text-white border border-neutral-800 space-y-4 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-red-500">
+                    <MapPin className="w-4 h-4" />
+                    <span>{result.title || (language === 'ta' ? 'உங்கள் ஊரை தேர்ந்தெடுக்கவும்' : 'Select Location (30 km Radius)')}</span>
+                  </div>
+                  <button
+                    onClick={handleReset}
+                    className="text-xs text-neutral-400 hover:text-white font-bold"
+                  >
+                    Reset
+                  </button>
+                </div>
+
+                <p className="text-xs sm:text-sm text-neutral-200 leading-relaxed font-medium">
+                  {result.explanation}
+                </p>
+
+                <div>
+                  <span className="block text-[11px] font-bold text-neutral-400 uppercase tracking-wider mb-2.5">
+                    {language === 'ta' ? 'பிரபலமான இடங்கள் (30 கி.மீ சுற்றளவு):' : 'Popular Towns across Tamil Nadu (30 km Radius):'}
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {result.suggestedLocations?.map((loc, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => {
+                          const targetText = query && !query.includes('services near') && !query.includes('services in')
+                            ? `${query} in ${loc.name}`
+                            : `services near ${loc.name}`
+                          setQuery(targetText)
+                          handleSearch(targetText)
+                        }}
+                        className="px-3.5 py-2 rounded-xl bg-neutral-800 hover:bg-red-600 text-white text-xs font-bold border border-neutral-700 hover:border-red-500 transition shadow-sm flex items-center gap-1.5"
+                      >
+                        <MapPin className="w-3.5 h-3.5 text-red-400" />
+                        <span>{language === 'ta' && loc.nameTa ? loc.nameTa : loc.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             ) : (
               /* 2. Service Intent Criteria Badges */
               <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 space-y-2">
@@ -237,6 +282,31 @@ export function AIAssistantModal({ isOpen, onClose }) {
                 <p className="text-xs text-neutral-700 font-medium italic pt-1">
                   "{result.explanation}"
                 </p>
+
+                {/* Suggested location chips if location wasn't specified */}
+                {result.suggestedLocations && result.suggestedLocations.length > 0 && (
+                  <div className="pt-2 border-t border-neutral-200">
+                    <span className="block text-[11px] font-bold text-neutral-500 uppercase tracking-wider mb-1.5">
+                      {language === 'ta' ? '30 கி.மீ சுற்றளவில் வடிகட்ட ஊரை தேர்ந்தெடுக்கவும்:' : 'Filter within 30 km of your town:'}
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {result.suggestedLocations.map((loc, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => {
+                            const targetText = `${query} in ${loc.name}`
+                            setQuery(targetText)
+                            handleSearch(targetText)
+                          }}
+                          className="px-2.5 py-1 rounded-lg bg-white hover:bg-red-50 hover:text-red-600 hover:border-red-300 border border-neutral-300 text-xs font-bold text-neutral-800 transition"
+                        >
+                          {language === 'ta' && loc.nameTa ? loc.nameTa : loc.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 

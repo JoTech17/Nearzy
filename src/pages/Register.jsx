@@ -42,7 +42,7 @@ export function RegisterPage() {
     <div className="max-w-md mx-auto px-4 py-12 space-y-6">
       <div className="text-center space-y-2">
         <Link to="/" className="inline-flex items-center gap-2 mb-2">
-          <img src="/logo.svg" alt="Nearzy Logo" className="w-10 h-10 rounded-xl" />
+          <img src="/logo.png" alt="Nearzy Logo" className="w-10 h-10 object-contain rounded-xl" />
           <span className="text-2xl font-black text-slate-900">
             Near<span className="text-red-600">zy</span>
           </span>

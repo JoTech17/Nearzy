@@ -98,7 +98,7 @@ export function LoginPage() {
       {/* Brand Header */}
       <div className="text-center space-y-2">
         <Link to="/" className="inline-flex items-center gap-2 mb-2 group">
-          <img src="/logo.svg" alt="Nearzy Logo" className="w-12 h-12 rounded-xl group-hover:scale-105 transition" />
+          <img src="/logo.png" alt="Nearzy Logo" className="w-12 h-12 object-contain rounded-xl group-hover:scale-105 transition" />
           <span className="text-3xl font-black text-black">
             Near<span className="text-red-600">zy</span>
           </span>

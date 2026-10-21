@@ -135,6 +135,31 @@ function clean(str) {
 }
 
 /**
+ * Strips Tamil locative suffixes like -இல், -த்தில், -ல், -க்கு
+ */
+function normalizeTamilWord(word) {
+  if (!word) return ''
+  return word
+    .replace(/(?:த்தில்|த்தில|க்கு|ற்கு|இல்|வில்|யில்|ல்|உள்ள|அருகில்)$/u, '')
+    .trim()
+}
+
+/**
+ * Check if a word or stem matches a location in Tamil
+ */
+function matchTamilLocation(stem, loc) {
+  if (!stem || stem.length < 2) return false
+  const nameTa = clean(loc.nameTa)
+  if (nameTa === stem) return true
+  if (nameTa.startsWith(stem) && stem.length >= 3) return true
+  if (stem.startsWith(nameTa) && nameTa.length >= 3) return true
+  return loc.aliases?.some(a => {
+    const ca = clean(a)
+    return ca === stem || (ca.startsWith(stem) && stem.length >= 3) || (stem.startsWith(ca) && ca.length >= 3)
+  })
+}
+
+/**
  * Resolve location query with alias mapping, district matching, token parsing and fuzzy search
  */
 export function resolveLocation(query) {
@@ -142,12 +167,11 @@ export function resolveLocation(query) {
   const q = clean(query)
   if (!q) return null
 
-  // 1. Direct ID, Name, NameTa or District exact match
+  // 1. Direct ID, Name, or NameTa exact match
   const exact = TAMIL_NADU_LOCATIONS.find(l => 
     l.id === q || 
     clean(l.name) === q || 
-    clean(l.nameTa) === q ||
-    clean(l.district) === q
+    clean(l.nameTa) === q
   )
   if (exact) return exact
 
@@ -157,45 +181,79 @@ export function resolveLocation(query) {
   )
   if (directAlias) return directAlias
 
-  // 3. Word token check: extract tokens from natural language sentences
+  // 3. Direct district exact match
+  const districtExact = TAMIL_NADU_LOCATIONS.find(l => clean(l.district) === q)
+  if (districtExact) return districtExact
+
+  // 4. Word token check: extract tokens from natural language sentences
   // e.g. "show all services in kkdi" -> tokens: ["show", "all", "services", "in", "kkdi"]
   const words = q.split(' ').filter(w => w.length >= 2)
-  const skipWords = new Set(['all', 'in', 'at', 'near', 'show', 'the', 'and', 'for', 'best', 'top', 'any', 'service', 'services', 'find', 'me', 'to', 'of'])
-  
+  const skipWords = new Set([
+    'all', 'in', 'at', 'near', 'show', 'the', 'and', 'for', 'best', 'top', 
+    'any', 'service', 'services', 'find', 'me', 'to', 'of', 'place', 'places',
+    'area', 'city', 'town', 'district', 'need', 'want', 'around', 'doorstep'
+  ])
+
+  // Pass 4A: Check single words for Town/City/Alias exact matches (town priority over district)
   for (const word of words) {
     if (skipWords.has(word)) continue
-    
-    // Check if single word matches an alias or location name exactly
+    const stem = normalizeTamilWord(word)
+
     const tokenMatch = TAMIL_NADU_LOCATIONS.find(l =>
       l.id === word ||
       clean(l.name) === word ||
-      clean(l.district) === word ||
-      l.aliases?.some(a => clean(a) === word)
+      clean(l.nameTa) === word ||
+      matchTamilLocation(stem, l) ||
+      l.aliases?.some(a => clean(a) === word || clean(a) === stem)
     )
     if (tokenMatch) return tokenMatch
   }
 
-  // 4. Two-word phrase check (e.g. "anna nagar", "rs puram", "mattuthavani")
+  // Pass 4B: Check if single word matches a District name (e.g. "sivaganga district" or "madurai district")
+  for (const word of words) {
+    if (skipWords.has(word)) continue
+    const stem = normalizeTamilWord(word)
+
+    // Prioritize district headquarters first if exists
+    const hqMatch = TAMIL_NADU_LOCATIONS.find(l =>
+      (l.id === word || clean(l.name) === word) && clean(l.district) === word
+    )
+    if (hqMatch) return hqMatch
+
+    const districtMatch = TAMIL_NADU_LOCATIONS.find(l =>
+      clean(l.district) === word || clean(l.district) === stem
+    )
+    if (districtMatch) return districtMatch
+  }
+
+  // 5. Two-word phrase check (e.g. "anna nagar", "rs puram", "mattuthavani")
   for (let i = 0; i < words.length - 1; i++) {
     const phrase = `${words[i]} ${words[i+1]}`
     const phraseMatch = TAMIL_NADU_LOCATIONS.find(l =>
       clean(l.name) === phrase ||
+      clean(l.nameTa) === phrase ||
       l.aliases?.some(a => clean(a) === phrase)
     )
     if (phraseMatch) return phraseMatch
   }
 
-  // 5. Substring / phrase match (e.g., sentence contains "karaikudi" or "sivaganga")
+  // 6. Substring / phrase match (e.g., sentence contains "karaikudi" or "sivaganga")
   for (const l of TAMIL_NADU_LOCATIONS) {
     const locName = clean(l.name)
-    const locDistrict = clean(l.district)
-    if (locName && q.includes(locName)) return l
-    if (locDistrict && q.includes(locDistrict)) return l
+    if (locName && locName.length >= 3 && q.includes(locName)) return l
     
     if (l.aliases?.some(a => {
       const ca = clean(a)
       return ca.length >= 3 && (new RegExp(`\\b${ca}\\b`, 'i').test(q) || q.includes(ca))
     })) {
+      return l
+    }
+  }
+
+  // 7. Substring on district name
+  for (const l of TAMIL_NADU_LOCATIONS) {
+    const locDistrict = clean(l.district)
+    if (locDistrict && locDistrict.length >= 3 && q.includes(locDistrict)) {
       return l
     }
   }

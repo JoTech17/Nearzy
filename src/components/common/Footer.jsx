@@ -28,7 +28,7 @@ export function Footer() {
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <Link to="/" className="flex items-center gap-3">
-              <img src="/logo.svg" alt="Nearzy Logo" className="w-10 h-10 rounded-xl" />
+              <img src="/logo.png" alt="Nearzy Logo" className="w-10 h-10 object-contain rounded-xl" />
               <div className="flex flex-col">
                 <span className="text-2xl font-black tracking-tight text-white flex items-center gap-0.5">
                   Near<span className="text-red-600">zy</span>
