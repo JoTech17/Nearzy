@@ -13,6 +13,7 @@ import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
 import { getServiceImage } from '@/data/serviceImages'
+import { PageTransition } from '@/components/common/PageTransition'
 import { 
   getBusinessBySlug, 
   getBusinessReviews, 
@@ -140,7 +141,8 @@ export function BusinessDetailPage() {
   const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <PageTransition>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* 1. Header Banner & Title */}
       <div className="relative rounded-3xl overflow-hidden bg-slate-900 border border-slate-200 shadow-card">
         {/* Banner image */}
@@ -552,5 +554,6 @@ export function BusinessDetailPage() {
         businessName={business.name}
       />
     </div>
-  )
+  </PageTransition>
+)
 }

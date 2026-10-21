@@ -182,7 +182,7 @@ const translations = {
     searchPlaceholder: 'பிளம்பர், சலூன், எலக்ட்ரீஷியன், மெக்கானிக், டியூஷன் தேடுங்கள்...',
     allLocalities: 'அனைத்து பகுதிகள்',
     searchAction: 'தேடு',
-    askAiPrompt: 'ஜோவாலா AI-யிடம் கேளுங்கள்',
+    askAiPrompt: 'Nearzy AI-யிடம் கேளுங்கள்',
     detectLocation: 'இருப்பிடத்தைக் கண்டறி',
     detectingLocation: 'கண்டறியப்படுகிறது...',
 
@@ -207,7 +207,7 @@ const translations = {
     bookNow: 'முன்பதிவு செய்',
 
     // How it works
-    howItWorksTitle: 'ஜோவாலா எப்படி செயல்படுகிறது?',
+    howItWorksTitle: 'Nearzy எப்படி செயல்படுகிறது?',
     howItWorksSubtitle: 'உள்ளூர் சேவை தேடலை 4 எளிய படிகளில் எளிதாக்குகிறது',
     step1Title: 'தேடுங்கள் அல்லது AI-யிடம் கேளுங்கள்',
     step1Desc: 'உங்கள் தேவையை தமிழில் அல்லது ஆங்கிலத்தில் தட்டச்சு செய்யுங்கள் அல்லது வகைகளை ஆராயுங்கள்.',
@@ -220,7 +220,7 @@ const translations = {
 
     // Business CTA
     businessCtaTitle: 'நீங்கள் உள்ளூர் வணிக உரிமையாளரா அல்லது சேவை வழங்குநரா?',
-    businessCtaSubtitle: 'ஜோவாலாவில் இப்போதே இணையுங்கள். புதிய வாடிக்கையாளர்களைப் பெறுங்கள், உங்கள் வணிகத்தை எளிதாக நிர்வகியுங்கள்.',
+    businessCtaSubtitle: 'Nearzy-யில் இப்போதே இணையுங்கள். புதிய வாடிக்கையாளர்களைப் பெறுங்கள், உங்கள் வணிகத்தை எளிதாக நிர்வகியுங்கள்.',
     registerYourBusiness: 'புதிய வணிகத்தைப் பதிவு செய்',
     claimExistingBusiness: 'உங்கள் வணிகத்தை உரிமை கோருங்கள்',
 
@@ -243,7 +243,7 @@ const translations = {
     sortPriceLowHigh: 'கட்டணம்: குறைவு முதல் அதிகம்',
     sortPriceHighLow: 'கட்டணம்: அதிகம் முதல் குறைவு',
     noBusinessesFound: 'பொருத்தமான வணிகங்கள் எதுவும் கிடைக்கவில்லை',
-    noBusinessesSubtitle: 'வடிகட்டிகளை மாற்றிப் பாருங்கள் அல்லது ஜோவாலா AI உதவியைப் பெறுங்கள்.',
+    noBusinessesSubtitle: 'வடிகட்டிகளை மாற்றிப் பாருங்கள் அல்லது Nearzy AI உதவியைப் பெறுங்கள்.',
 
     // Business Details
     overviewTab: 'விவரங்கள் & சேவைகள்',

@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Lock, Mail, ArrowRight, Loader2, Sparkles, User, Briefcase, Shield, CheckCircle2 } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
+import { PageTransition } from '@/components/common/PageTransition'
 
 export function LoginPage() {
   const { signIn } = useAuth()
@@ -94,7 +95,8 @@ export function LoginPage() {
   }
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-12 space-y-8">
+    <PageTransition>
+      <div className="max-w-xl mx-auto px-4 py-12 space-y-8">
       {/* Brand Header */}
       <div className="text-center space-y-2">
         <Link to="/" className="inline-flex items-center gap-2 mb-2 group">
@@ -231,5 +233,6 @@ export function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  </PageTransition>
+)
 }

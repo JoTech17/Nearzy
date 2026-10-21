@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Menu, X, Sparkles, User, Globe, ChevronDown, 
-  LogOut, PlusCircle, Shield, Briefcase, Calendar
+  LogOut, PlusCircle, Shield, Briefcase, Calendar, HelpCircle
 } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
@@ -76,6 +77,14 @@ export function Navbar({ onOpenAiModal, onOpenAuthModal }) {
               }`}
             >
               {t('navCategories')}
+            </Link>
+            <Link
+              to="/support"
+              className={`text-sm font-bold transition ${
+                isActive('/support') ? 'text-red-600 border-b-2 border-red-600 pb-1' : 'text-neutral-800 hover:text-red-600'
+              }`}
+            >
+              {t('contactSupport')}
             </Link>
 
             {user && !isBusinessOwner && !isAdmin && (
@@ -151,74 +160,92 @@ export function Navbar({ onOpenAiModal, onOpenAuthModal }) {
                   <ChevronDown className="w-3.5 h-3.5 text-neutral-500" />
                 </button>
 
-                {userDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-neutral-200 py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="px-4 py-2 border-b border-neutral-100">
-                      <p className="text-xs font-bold text-neutral-900 truncate">{user.displayName}</p>
-                      <p className="text-[11px] text-neutral-500 truncate">{user.email}</p>
-                      <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-red-50 text-red-700 border border-red-200">
-                        {user.role?.replace('_', ' ')}
-                      </span>
-                    </div>
+                <AnimatePresence>
+                  {userDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-neutral-200 py-2 z-50"
+                    >
+                      <div className="px-4 py-2 border-b border-neutral-100">
+                        <p className="text-xs font-bold text-neutral-900 truncate">{user.displayName}</p>
+                        <p className="text-[11px] text-neutral-500 truncate">{user.email}</p>
+                        <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase bg-red-50 text-red-700 border border-red-200">
+                          {user.role?.replace('_', ' ')}
+                        </span>
+                      </div>
 
-                    <div className="py-1">
-                      {/* Direct Link to their respective dashboard */}
-                      <Link
-                        to={getDashboardPath()}
-                        onClick={() => setUserDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-neutral-800 hover:bg-neutral-50 transition"
-                      >
-                        {isAdmin ? (
-                          <>
-                            <Shield className="w-4 h-4 text-red-600" />
-                            <span>{t('navAdminPortal')}</span>
-                          </>
-                        ) : isBusinessOwner ? (
-                          <>
-                            <Briefcase className="w-4 h-4 text-red-600" />
-                            <span>{t('navOwnerPortal')}</span>
-                          </>
-                        ) : (
-                          <>
-                            <User className="w-4 h-4 text-red-600" />
-                            <span>{t('navCustomerPortal')}</span>
-                          </>
-                        )}
-                      </Link>
-
-                      {/* Direct link to Bookings page */}
-                      {isBusinessOwner ? (
+                      <div className="py-1">
+                        {/* Direct Link to their respective dashboard */}
                         <Link
-                          to="/owner/bookings"
+                          to={getDashboardPath()}
                           onClick={() => setUserDropdownOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-neutral-800 hover:bg-neutral-50 transition"
                         >
-                          <Calendar className="w-4 h-4 text-red-600" />
-                          <span>Customer Bookings</span>
+                          {isAdmin ? (
+                            <>
+                              <Shield className="w-4 h-4 text-red-600" />
+                              <span>{t('navAdminPortal')}</span>
+                            </>
+                          ) : isBusinessOwner ? (
+                            <>
+                              <Briefcase className="w-4 h-4 text-red-600" />
+                              <span>{t('navOwnerPortal')}</span>
+                            </>
+                          ) : (
+                            <>
+                              <User className="w-4 h-4 text-red-600" />
+                              <span>{t('navCustomerPortal')}</span>
+                            </>
+                          )}
                         </Link>
-                      ) : !isAdmin ? (
+
+                        {/* Direct link to Bookings page */}
+                        {isBusinessOwner ? (
+                          <Link
+                            to="/owner/bookings"
+                            onClick={() => setUserDropdownOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-neutral-800 hover:bg-neutral-50 transition"
+                          >
+                            <Calendar className="w-4 h-4 text-red-600" />
+                            <span>Customer Bookings</span>
+                          </Link>
+                        ) : !isAdmin ? (
+                          <Link
+                            to="/my-bookings"
+                            onClick={() => setUserDropdownOpen(false)}
+                            className="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-neutral-800 hover:bg-neutral-50 transition"
+                          >
+                            <Calendar className="w-4 h-4 text-red-600" />
+                            <span>My Bookings</span>
+                          </Link>
+                        ) : null}
+
+                        {/* Help & Support Desk */}
                         <Link
-                          to="/my-bookings"
+                          to="/support"
                           onClick={() => setUserDropdownOpen(false)}
                           className="flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-neutral-800 hover:bg-neutral-50 transition"
                         >
-                          <Calendar className="w-4 h-4 text-red-600" />
-                          <span>My Bookings</span>
+                          <HelpCircle className="w-4 h-4 text-red-600" />
+                          <span>{t('contactSupport')}</span>
                         </Link>
-                      ) : null}
-                    </div>
+                      </div>
 
-                    <div className="border-t border-neutral-100 pt-1">
-                      <button
-                        onClick={handleSignOut}
-                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 transition"
-                      >
-                        <LogOut className="w-4 h-4 text-red-600" />
-                        <span>{t('navLogout')}</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
+                      <div className="border-t border-neutral-100 pt-1">
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full flex items-center gap-2.5 px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 transition"
+                        >
+                          <LogOut className="w-4 h-4 text-red-600" />
+                          <span>{t('navLogout')}</span>
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ) : (
               <div className="flex items-center gap-2">
@@ -259,105 +286,137 @@ export function Navbar({ onOpenAiModal, onOpenAuthModal }) {
       </div>
 
       {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden border-t border-neutral-100 bg-white px-4 pt-3 pb-6 space-y-3">
-          <nav className="flex flex-col gap-2">
-            <Link
-              to="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-lg text-sm font-bold text-neutral-800 hover:bg-neutral-50"
-            >
-              {t('navHome')}
-            </Link>
-            <Link
-              to="/search"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-lg text-sm font-bold text-neutral-800 hover:bg-neutral-50"
-            >
-              {t('navExplore')}
-            </Link>
-            <Link
-              to="/categories"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-lg text-sm font-bold text-neutral-800 hover:bg-neutral-50"
-            >
-              {t('navCategories')}
-            </Link>
-            <Link
-              to="/register-business"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-lg text-sm font-bold text-red-600 hover:bg-red-50"
-            >
-              {t('navListBusiness')}
-            </Link>
-            <Link
-              to="/claim-business"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2 rounded-lg text-sm font-bold text-neutral-700 hover:bg-neutral-50"
-            >
-              {t('claimExistingBusiness')}
-            </Link>
-          </nav>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="sm:hidden border-t border-neutral-100 bg-white px-4 pt-3 pb-6 space-y-3 overflow-hidden"
+          >
+            <nav className="flex flex-col gap-1.5">
+              <Link
+                to="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg text-sm font-bold text-neutral-800 hover:bg-neutral-50"
+              >
+                {t('navHome')}
+              </Link>
+              <Link
+                to="/search"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg text-sm font-bold text-neutral-800 hover:bg-neutral-50"
+              >
+                {t('navExplore')}
+              </Link>
+              <Link
+                to="/categories"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg text-sm font-bold text-neutral-800 hover:bg-neutral-50"
+              >
+                {t('navCategories')}
+              </Link>
+              <Link
+                to="/support"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg text-sm font-bold text-neutral-800 hover:bg-neutral-50 flex items-center justify-between"
+              >
+                <span>{t('contactSupport')}</span>
+                <HelpCircle className="w-4 h-4 text-red-600" />
+              </Link>
+              <Link
+                to="/register-business"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg text-sm font-bold text-red-600 hover:bg-red-50 flex items-center gap-2"
+              >
+                <PlusCircle className="w-4 h-4" />
+                <span>{t('navListBusiness')}</span>
+              </Link>
+              <Link
+                to="/claim-business"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg text-sm font-bold text-neutral-700 hover:bg-neutral-50"
+              >
+                {t('claimExistingBusiness')}
+              </Link>
+            </nav>
 
-          <div className="border-t border-neutral-100 pt-3 flex flex-col gap-2">
-            <button
-              onClick={() => { toggleLanguage(); setMobileMenuOpen(false); }}
-              className="flex items-center justify-between px-3 py-2 rounded-lg bg-neutral-50 text-xs font-bold text-neutral-800"
-            >
-              <span className="flex items-center gap-2">
-                <Globe className="w-4 h-4 text-red-600" />
-                Language
-              </span>
-              <span className="text-red-600 font-extrabold">{language === 'en' ? 'தமிழ்' : 'English'}</span>
-            </button>
+            <div className="border-t border-neutral-100 pt-3 flex flex-col gap-2">
+              <button
+                onClick={() => { toggleLanguage(); setMobileMenuOpen(false); }}
+                className="flex items-center justify-between px-3 py-2 rounded-lg bg-neutral-50 text-xs font-bold text-neutral-800"
+              >
+                <span className="flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-red-600" />
+                  Language
+                </span>
+                <span className="text-red-600 font-extrabold">{language === 'en' ? 'தமிழ்' : 'English'}</span>
+              </button>
 
-            {user ? (
-              <>
-                <Link
-                  to={getDashboardPath()}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 text-xs font-bold text-neutral-900 bg-neutral-100 rounded-lg flex items-center gap-2"
-                >
-                  <User className="w-4 h-4 text-red-600" />
-                  <span>My Portal</span>
+              {user ? (
+                <>
+                  <Link
+                    to={getDashboardPath()}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-3 py-2 text-xs font-bold text-neutral-900 bg-neutral-100 rounded-lg flex items-center gap-2"
+                  >
+                    <User className="w-4 h-4 text-red-600" />
+                    <span>My Portal</span>
+                  </Link>
+                  <Link
+                    to={isBusinessOwner ? "/owner/bookings" : "/my-bookings"}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="px-3 py-2 text-xs font-bold text-neutral-900 bg-neutral-100 rounded-lg flex items-center gap-2"
+                  >
+                    <Calendar className="w-4 h-4 text-red-600" />
+                    <span>{isBusinessOwner ? "Manage Bookings" : "My Bookings"}</span>
+                  </Link>
+                  <button
+                    onClick={handleSignOut}
+                    className="px-3 py-2 text-xs font-bold text-red-600 bg-red-50 rounded-lg text-left flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>{t('navLogout')}</span>
+                  </button>
+                </>
+              ) : (
+                <div className="grid grid-cols-2 gap-2 pt-2">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-center py-2.5 rounded-xl border border-neutral-300 text-xs font-bold text-neutral-900"
+                  >
+                    {t('navLogin')}
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-center py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold"
+                  >
+                    {t('navSignUp')}
+                  </Link>
+                </div>
+              )}
+
+              {/* Bottom Policy Links in Mobile Drawer */}
+              <div className="pt-2 border-t border-neutral-100 flex items-center justify-around text-[11px] text-neutral-500 font-bold">
+                <Link to="/privacy" onClick={() => setMobileMenuOpen(false)} className="hover:text-red-600">
+                  {t('privacyPolicy')}
                 </Link>
-                <Link
-                  to={isBusinessOwner ? "/owner/bookings" : "/my-bookings"}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 text-xs font-bold text-neutral-900 bg-neutral-100 rounded-lg flex items-center gap-2"
-                >
-                  <Calendar className="w-4 h-4 text-red-600" />
-                  <span>{isBusinessOwner ? "Manage Bookings" : "My Bookings"}</span>
+                <span>•</span>
+                <Link to="/terms" onClick={() => setMobileMenuOpen(false)} className="hover:text-red-600">
+                  {t('termsOfService')}
                 </Link>
-                <button
-                  onClick={handleSignOut}
-                  className="px-3 py-2 text-xs font-bold text-red-600 bg-red-50 rounded-lg text-left flex items-center gap-2"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>{t('navLogout')}</span>
-                </button>
-              </>
-            ) : (
-              <div className="grid grid-cols-2 gap-2 pt-2">
-                <Link
-                  to="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2.5 rounded-xl border border-neutral-300 text-xs font-bold text-neutral-900"
-                >
-                  {t('navLogin')}
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-center py-2.5 rounded-xl bg-red-600 text-white text-xs font-bold"
-                >
-                  {t('navSignUp')}
+                <span>•</span>
+                <Link to="/support" onClick={() => setMobileMenuOpen(false)} className="hover:text-red-600">
+                  {t('contactSupport')}
                 </Link>
               </div>
-            )}
-          </div>
-        </div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   )
 }

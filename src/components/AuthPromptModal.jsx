@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
 import { 
   User, Briefcase, ArrowRight, ShieldCheck, 
   MapPin, X, Sparkles, CheckCircle2 
@@ -9,8 +10,6 @@ import { useAuth } from '@/context/AuthContext'
 export function AuthPromptModal({ isOpen, onClose }) {
   const navigate = useNavigate()
   const { switchDemoRole } = useAuth()
-
-  if (!isOpen) return null
 
   const handleGoToLogin = (role = 'customer') => {
     onClose()
@@ -23,38 +22,52 @@ export function AuthPromptModal({ isOpen, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-in fade-in duration-200">
-      <div 
-        className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden transform transition-all p-6 sm:p-8"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Subtle Background Glow */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/5 rounded-full blur-3xl pointer-events-none" />
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/75 backdrop-blur-md"
+            onClick={onClose}
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.94, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.94, y: 15 }}
+            transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+            className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-neutral-200 overflow-hidden z-10 p-6 sm:p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Subtle Background Glow */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/5 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 flex items-center justify-center transition"
-          aria-label="Close"
-        >
-          <X className="w-5 h-5" />
-        </button>
+            {/* Close Button */}
+            <button
+              onClick={onClose}
+              className="absolute top-5 right-5 w-9 h-9 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-600 flex items-center justify-center transition"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
 
-        {/* Header */}
-        <div className="text-center space-y-2 mb-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-black text-red-600 uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Welcome to Nearzy</span>
-          </div>
+            {/* Header */}
+            <div className="text-center space-y-2 mb-6">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-black text-red-600 uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Welcome to Nearzy</span>
+              </div>
 
-          <h2 className="text-2xl sm:text-3xl font-black text-black tracking-tight">
-            Please Sign In or Register
-          </h2>
-          <p className="text-xs sm:text-sm text-neutral-600 max-w-md mx-auto font-medium">
-            Unga Ooru, Unga Service! Join thousands of verified users and local service providers across Tamil Nadu.
-          </p>
-        </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-black tracking-tight">
+                Please Sign In or Register
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-600 max-w-md mx-auto font-medium">
+                Unga Ooru, Unga Service! Join thousands of verified users and local service providers across Tamil Nadu.
+              </p>
+            </div>
 
         {/* Choice Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
@@ -134,7 +147,9 @@ export function AuthPromptModal({ isOpen, onClose }) {
             Continue as Guest →
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
-  )
+  )}
+</AnimatePresence>
+)
 }

@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         brand: {
-          // Official JoWala Red, White & Black Theme
+          // Official Nearzy Red, White & Black Theme
           red: '#DC2626',       // Vibrant Primary Crimson Red
           redDark: '#991B1B',   // Deep Red
           redLight: '#FEF2F2',  // Light Red Tint

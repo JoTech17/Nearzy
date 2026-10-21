@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Lock, Mail, User, Phone, ArrowRight, Loader2, Briefcase, ShieldCheck } from 'lucide-react'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
+import { PageTransition } from '@/components/common/PageTransition'
 
 export function RegisterPage() {
   const { signUp } = useAuth()
@@ -39,7 +40,8 @@ export function RegisterPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto px-4 py-12 space-y-6">
+    <PageTransition>
+      <div className="max-w-md mx-auto px-4 py-12 space-y-6">
       <div className="text-center space-y-2">
         <Link to="/" className="inline-flex items-center gap-2 mb-2">
           <img src="/logo.png" alt="Nearzy Logo" className="w-10 h-10 object-contain rounded-xl" />
@@ -181,5 +183,6 @@ export function RegisterPage() {
         </div>
       </div>
     </div>
-  )
+  </PageTransition>
+)
 }

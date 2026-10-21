@@ -84,6 +84,11 @@ export function Footer() {
                   {t('claimExistingBusiness')}
                 </Link>
               </li>
+              <li>
+                <Link to="/support" className="hover:text-red-500 transition">
+                  {t('contactSupport')}
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -136,9 +141,9 @@ export function Footer() {
         <div className="pt-8 border-t border-neutral-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
           <p>{t('copyright')}</p>
           <div className="flex items-center gap-6">
-            <span className="hover:text-white cursor-pointer transition">{t('privacyPolicy')}</span>
-            <span className="hover:text-white cursor-pointer transition">{t('termsOfService')}</span>
-            <span className="hover:text-white cursor-pointer transition">{t('contactSupport')}</span>
+            <Link to="/privacy" className="hover:text-white transition">{t('privacyPolicy')}</Link>
+            <Link to="/terms" className="hover:text-white transition">{t('termsOfService')}</Link>
+            <Link to="/support" className="hover:text-white transition">{t('contactSupport')}</Link>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { 
   Search, MapPin, Sparkles, ArrowRight, 
   ChevronRight, Compass
@@ -13,6 +14,7 @@ import { useLanguage } from '@/context/LanguageContext'
 import { getCategories, searchBusinesses } from '@/services/businessService'
 import { TAMIL_NADU_LOCATIONS, filterProvidersWithinRadius } from '@/data/tamilNaduLocations'
 import { LocationAutocomplete } from '@/components/common/LocationAutocomplete'
+import { PageTransition } from '@/components/common/PageTransition'
 
 export function Home({ onOpenAiModal }) {
   const { t, language } = useLanguage()
@@ -98,95 +100,118 @@ export function Home({ onOpenAiModal }) {
   }
 
   return (
-    <div className="space-y-16 pb-20">
-      {/* 1. Hero Section (Red, White & Black) */}
-      <section className="relative overflow-hidden pt-12 pb-20 bg-gradient-to-b from-red-50/40 via-white to-neutral-50">
-        <div className="absolute top-0 right-10 w-96 h-96 bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-20 left-10 w-96 h-96 bg-black/5 rounded-full blur-3xl pointer-events-none" />
+    <PageTransition>
+      <div className="space-y-16 pb-20">
+        {/* 1. Hero Section (Red, White & Black) */}
+        <section className="relative overflow-hidden pt-12 pb-20 bg-gradient-to-b from-red-50/40 via-white to-neutral-50">
+          <div className="absolute top-0 right-10 w-96 h-96 bg-red-600/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-20 left-10 w-96 h-96 bg-black/5 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          {/* Tagline Pill */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-neutral-200 shadow-soft mb-6">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping" />
-            <span className="text-xs font-black text-black uppercase tracking-wider">
-              {t('brandName')} — <span className="text-red-600">{t('tagline')}</span>
-            </span>
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-black tracking-tight max-w-4xl mx-auto leading-tight mb-5">
-            {t('heroHeadline')}
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">
-            Discover verified local services within 30 km across all 38 districts of Tamil Nadu. Compare transparent prices and book instantly.
-          </p>
-
-          {/* Search Box */}
-          <div className="max-w-3xl mx-auto">
-            <form
-              onSubmit={handleSearchSubmit}
-              className="p-2 sm:p-2.5 bg-white rounded-3xl border border-neutral-300 shadow-card flex flex-col md:flex-row items-center gap-2"
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            {/* Tagline Pill */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.88 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-neutral-200 shadow-soft mb-6"
             >
-              {/* Keyword / Service Input */}
-              <div className="flex-1 w-full flex items-center px-4 py-2 border-b md:border-b-0 md:border-r border-neutral-200">
-                <Search className="w-5 h-5 text-neutral-400 shrink-0 mr-3" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={t('searchPlaceholder')}
-                  className="w-full text-sm font-semibold text-black placeholder:text-neutral-400 outline-none bg-transparent"
-                />
-              </div>
-
-              {/* All Tamil Nadu Locations Typeahead */}
-              <div className="w-full md:w-72 px-1">
-                <LocationAutocomplete
-                  value={selectedLocality}
-                  placeholder="Select town or district..."
-                  onChange={(val) => setSelectedLocality(val)}
-                  onSelect={(loc) => {
-                    if (loc) {
-                      setSelectedLocality(loc.name)
-                      setMapLocation(loc)
-                    } else {
-                      setSelectedLocality('')
-                    }
-                  }}
-                  inputClassName="border-0 shadow-none text-xs font-bold text-neutral-800 bg-transparent py-2.5 focus:ring-0 focus:border-transparent"
-                />
-              </div>
-
-              {/* Search Submit Button */}
-              <button
-                type="submit"
-                className="w-full md:w-auto px-7 py-3.5 rounded-2xl bg-red-600 hover:bg-black text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 shrink-0"
-              >
-                <span>{t('searchAction')}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </form>
-
-            {/* Quick Actions below search */}
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs">
-              <span className="text-neutral-600 font-bold">
-                📍 Showing services within <strong className="text-red-600">30 km radius</strong> across Tamil Nadu
+              <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping" />
+              <span className="text-xs font-black text-black uppercase tracking-wider">
+                {t('brandName')} — <span className="text-red-600">{t('tagline')}</span>
               </span>
-              <span className="text-neutral-300">•</span>
-              <button
-                type="button"
-                onClick={onOpenAiModal}
-                className="flex items-center gap-1.5 text-red-600 hover:text-black font-extrabold transition"
+            </motion.div>
+
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.08, ease: 'easeOut' }}
+              className="text-4xl sm:text-5xl md:text-6xl font-black text-black tracking-tight max-w-4xl mx-auto leading-tight mb-5"
+            >
+              {t('heroHeadline')}
+            </motion.h1>
+
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.14, ease: 'easeOut' }}
+              className="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto mb-10 leading-relaxed font-medium"
+            >
+              Discover verified local services within 30 km across all 38 districts of Tamil Nadu. Compare transparent prices and book instantly.
+            </motion.p>
+
+            {/* Search Box */}
+            <motion.div
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.2, ease: 'easeOut' }}
+              className="max-w-3xl mx-auto"
+            >
+              <form
+                onSubmit={handleSearchSubmit}
+                className="p-2 sm:p-2.5 bg-white rounded-3xl border border-neutral-300 shadow-card flex flex-col md:flex-row items-center gap-2 hover:border-red-400 transition"
               >
-                <Sparkles className="w-3.5 h-3.5 text-red-600" />
-                <span>{t('askAiPrompt')} (Tamil & English)</span>
-              </button>
-            </div>
+                {/* Keyword / Service Input */}
+                <div className="flex-1 w-full flex items-center px-4 py-2 border-b md:border-b-0 md:border-r border-neutral-200">
+                  <Search className="w-5 h-5 text-neutral-400 shrink-0 mr-3" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={t('searchPlaceholder')}
+                    className="w-full text-sm font-semibold text-black placeholder:text-neutral-400 outline-none bg-transparent"
+                  />
+                </div>
+
+                {/* All Tamil Nadu Locations Typeahead */}
+                <div className="w-full md:w-72 px-1">
+                  <LocationAutocomplete
+                    value={selectedLocality}
+                    placeholder="Select town or district..."
+                    onChange={(val) => setSelectedLocality(val)}
+                    onSelect={(loc) => {
+                      if (loc) {
+                        setSelectedLocality(loc.name)
+                        setMapLocation(loc)
+                      } else {
+                        setSelectedLocality('')
+                      }
+                    }}
+                    inputClassName="border-0 shadow-none text-xs font-bold text-neutral-800 bg-transparent py-2.5 focus:ring-0 focus:border-transparent"
+                  />
+                </div>
+
+                {/* Search Submit Button */}
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="w-full md:w-auto px-7 py-3.5 rounded-2xl bg-red-600 hover:bg-black text-white font-extrabold text-sm shadow-md transition flex items-center justify-center gap-2 shrink-0"
+                >
+                  <span>{t('searchAction')}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </motion.button>
+              </form>
+
+              {/* Quick Actions below search */}
+              <div className="mt-4 flex flex-wrap items-center justify-center gap-3 text-xs">
+                <span className="text-neutral-600 font-bold">
+                  📍 Showing services within <strong className="text-red-600">30 km radius</strong> across Tamil Nadu
+                </span>
+                <span className="text-neutral-300">•</span>
+                <button
+                  type="button"
+                  onClick={onOpenAiModal}
+                  className="flex items-center gap-1.5 text-red-600 hover:text-black font-extrabold transition"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-red-600" />
+                  <span>{t('askAiPrompt')} (Tamil & English)</span>
+                </button>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* 2. Interactive Tamil Nadu Map & 30km Radius Finder */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -291,17 +316,33 @@ export function Home({ onOpenAiModal }) {
           </Link>
         </div>
 
-        {/* Categories Grid */}
+        {/* Categories Grid with Staggered Hover Motion */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4">
-          {categories.slice(0, 8).map((cat) => (
-            <CategoryCard key={cat.id} category={cat} />
+          {categories.slice(0, 8).map((cat, idx) => (
+            <motion.div
+              key={cat.id}
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.25, delay: idx * 0.03 }}
+              whileHover={{ y: -5, scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <CategoryCard category={cat} />
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* 4. AI Assistant Highlight Banner (Black, Red & White) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-3xl bg-black text-white p-8 sm:p-12 shadow-2xl border border-neutral-800">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="relative overflow-hidden rounded-3xl bg-black text-white p-8 sm:p-12 shadow-2xl border border-neutral-800"
+        >
           <div className="relative z-10 max-w-2xl">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-600/30 border border-red-500/40 text-xs font-bold uppercase tracking-wider mb-4 text-red-400">
               <Sparkles className="w-3.5 h-3.5 text-red-400" />
@@ -314,16 +355,18 @@ export function Home({ onOpenAiModal }) {
               Ask in Tamil or English: "Find an electrician in Salem under ₹400" or "கோவையில் சிறந்த கார் வாட்டர் வாஷ்".
               Gemini extracts your requirements and returns real providers within 30 km without inventing listings.
             </p>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={onOpenAiModal}
               className="px-6 py-3.5 rounded-2xl bg-red-600 hover:bg-white hover:text-black text-white font-black text-xs shadow-md transition flex items-center gap-2"
             >
               <span>{t('askAiPrompt')}</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </motion.button>
           </div>
           <div className="hidden lg:block absolute -right-10 -bottom-10 w-80 h-80 bg-red-600/20 rounded-full blur-3xl pointer-events-none" />
-        </div>
+        </motion.div>
       </section>
 
       {/* 5. Featured & Top Rated Businesses */}
@@ -354,8 +397,17 @@ export function Home({ onOpenAiModal }) {
           </div>
         ) : featuredBusinesses.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredBusinesses.map((biz) => (
-              <BusinessCard key={biz.id} business={biz} />
+            {featuredBusinesses.map((biz, idx) => (
+              <motion.div
+                key={biz.id}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.3, delay: idx * 0.04 }}
+                whileHover={{ y: -4 }}
+              >
+                <BusinessCard business={biz} />
+              </motion.div>
             ))}
           </div>
         ) : (
@@ -370,7 +422,13 @@ export function Home({ onOpenAiModal }) {
 
       {/* 6. Business Owner Callout (Black & Red) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-black text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 border border-neutral-800">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="bg-black text-white rounded-3xl p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 border border-neutral-800"
+        >
           <div className="max-w-xl space-y-3">
             <span className="text-xs font-black uppercase tracking-wider text-red-500">
               For Providers & Shop Owners
@@ -397,8 +455,9 @@ export function Home({ onOpenAiModal }) {
               {t('claimExistingBusiness')}
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
     </div>
+  </PageTransition>
   )
 }
