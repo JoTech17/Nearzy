@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { 
   Shield, CheckCircle, XCircle, AlertTriangle, Users, 
-  Briefcase, FileText, Clock, Search, Layers, Activity 
+  Briefcase, FileText, Clock, Search, Layers, Activity, Mail, Phone, Calendar
 } from 'lucide-react'
 import { Badge } from '@/components/common/Badge'
 import { useAuth } from '@/context/AuthContext'
 import { useToast } from '@/context/ToastContext'
+import { supabase, isSupabaseConfigured } from '@/lib/supabaseClient'
 import { 
   searchBusinesses, 
   getBusinessClaims, 
@@ -19,11 +20,13 @@ export function AdminDashboard() {
   const { user, isAdmin } = useAuth()
   const toast = useToast()
 
-  const [activeTab, setActiveTab] = useState('claims') // 'claims' | 'businesses' | 'categories' | 'reports' | 'audit'
+  const [activeTab, setActiveTab] = useState('profiles') // 'profiles' | 'claims' | 'businesses' | 'categories' | 'reports' | 'audit'
   const [businesses, setBusinesses] = useState([])
   const [claims, setClaims] = useState([])
   const [categories, setCategories] = useState([])
   const [reports, setReports] = useState([])
+  const [profiles, setProfiles] = useState([])
+  const [profileSearch, setProfileSearch] = useState('')
   const [loading, setLoading] = useState(true)
 
   // Audit log stream
@@ -47,6 +50,20 @@ export function AdminDashboard() {
         setClaims(clms)
         setCategories(cats)
         setReports(reps)
+
+        if (isSupabaseConfigured && supabase) {
+          try {
+            const { data: profData } = await supabase
+              .from('profiles')
+              .select('*, user_roles(role)')
+              .order('created_at', { ascending: false })
+            if (profData) {
+              setProfiles(profData)
+            }
+          } catch (pErr) {
+            console.warn('Error loading Supabase profiles:', pErr)
+          }
+        }
       } finally {
         setLoading(false)
       }
@@ -95,6 +112,17 @@ export function AdminDashboard() {
     toast.success('Report marked as resolved.')
   }
 
+  // Filtered profiles for live search
+  const filteredProfiles = profiles.filter(p => {
+    if (!profileSearch.trim()) return true
+    const q = profileSearch.toLowerCase()
+    return (
+      (p.display_name && p.display_name.toLowerCase().includes(q)) ||
+      (p.email && p.email.toLowerCase().includes(q)) ||
+      (p.id && p.id.toLowerCase().includes(q))
+    )
+  })
+
   // Admin KPIs
   const verifiedCount = businesses.filter(b => b.isVerified).length
   const pendingClaimsCount = claims.filter(c => c.status === 'pending').length
@@ -125,8 +153,14 @@ export function AdminDashboard() {
           </div>
         </div>
 
-        {/* 4 KPIs */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* 5 KPIs */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          <div className="p-4 rounded-2xl bg-slate-800/60 border border-purple-500/30">
+            <span className="text-[11px] font-bold text-purple-300 uppercase">Registered Profiles</span>
+            <span className="block text-2xl font-black text-white mt-1">{profiles.length}</span>
+            <span className="text-[11px] text-purple-300">Live in Supabase</span>
+          </div>
+
           <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60">
             <span className="text-[11px] font-bold text-slate-400 uppercase">Total Businesses</span>
             <span className="block text-2xl font-black text-white mt-1">{businesses.length}</span>
@@ -145,7 +179,7 @@ export function AdminDashboard() {
             <span className="text-[11px] text-brand-electric">Bilingual EN / தமிழ்</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60">
+          <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60 col-span-2 sm:col-span-1">
             <span className="text-[11px] font-bold text-slate-400 uppercase">Open Complaints</span>
             <span className="block text-2xl font-black text-red-400 mt-1">{openReportsCount}</span>
             <span className="text-[11px] text-slate-400">User reports</span>
@@ -155,6 +189,18 @@ export function AdminDashboard() {
 
       {/* Tabs */}
       <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
+        <button
+          onClick={() => setActiveTab('profiles')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
+            activeTab === 'profiles'
+              ? 'bg-purple-700 text-white shadow-sm'
+              : 'text-slate-600 hover:bg-slate-100'
+          }`}
+        >
+          <Users className="w-4 h-4" />
+          <span>Registered Profiles ({profiles.length})</span>
+        </button>
+
         <button
           onClick={() => setActiveTab('claims')}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition ${
@@ -215,6 +261,112 @@ export function AdminDashboard() {
           <span>Audit Logs</span>
         </button>
       </div>
+
+      {/* Tab: Registered User Profiles from Supabase */}
+      {activeTab === 'profiles' && (
+        <div className="space-y-4">
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-soft p-6 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h3 className="text-base font-bold text-slate-900">
+                  Registered User Accounts ({filteredProfiles.length})
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Live user profiles registered on Nearzy and synchronized with Supabase Database.
+                </p>
+              </div>
+
+              {/* Search Bar */}
+              <div className="relative w-full sm:w-72">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Search by name, email, or ID..."
+                  value={profileSearch}
+                  onChange={(e) => setProfileSearch(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-purple-600"
+                />
+              </div>
+            </div>
+
+            {filteredProfiles.length === 0 ? (
+              <div className="py-12 text-center text-slate-400">
+                <Users className="w-12 h-12 mx-auto mb-2 opacity-40 text-slate-300" />
+                <p className="text-sm font-semibold">No registered user profiles found</p>
+                <p className="text-xs text-slate-400 mt-1">Users will appear here as soon as they sign up via the registration page.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-slate-50 text-slate-500 uppercase font-bold text-[10px] tracking-wider border-b border-slate-200">
+                    <tr>
+                      <th className="py-3 px-4">User</th>
+                      <th className="py-3 px-4">Contact</th>
+                      <th className="py-3 px-4">Role</th>
+                      <th className="py-3 px-4">Database UUID</th>
+                      <th className="py-3 px-4">Language</th>
+                      <th className="py-3 px-4">Registered On</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 font-medium text-slate-700">
+                    {filteredProfiles.map((p) => {
+                      const userRole = p.user_roles?.[0]?.role || 'customer'
+                      return (
+                        <tr key={p.id} className="hover:bg-slate-50/70 transition">
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-xs">
+                                {(p.display_name || p.email || 'U')[0].toUpperCase()}
+                              </div>
+                              <div>
+                                <span className="font-bold text-slate-900 block">{p.display_name || 'Anonymous User'}</span>
+                                <span className="text-[11px] text-slate-400 font-mono">ID: {p.id.substring(0, 8)}...</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="space-y-0.5">
+                              <div className="flex items-center gap-1.5 text-slate-800">
+                                <Mail className="w-3 h-3 text-slate-400" />
+                                <span>{p.email || 'No email'}</span>
+                              </div>
+                              {p.phone && (
+                                <div className="flex items-center gap-1.5 text-slate-500 text-[11px]">
+                                  <Phone className="w-3 h-3 text-slate-400" />
+                                  <span>{p.phone}</span>
+                                </div>
+                              )}
+                            </div>
+                          </td>
+                          <td className="py-3 px-4">
+                            <Badge variant={userRole === 'admin' ? 'purple' : userRole === 'business_owner' ? 'warning' : 'info'}>
+                              {userRole.toUpperCase()}
+                            </Badge>
+                          </td>
+                          <td className="py-3 px-4 font-mono text-[11px] text-slate-500">
+                            {p.id}
+                          </td>
+                          <td className="py-3 px-4">
+                            <span className="uppercase font-bold text-[10px] px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                              {p.preferred_language || 'en'}
+                            </span>
+                          </td>
+                          <td className="py-3 px-4 text-slate-500">
+                            <div className="flex items-center gap-1.5">
+                              <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                              <span>{new Date(p.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                            </div>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Tab 1: Claims Review */}
       {activeTab === 'claims' && (

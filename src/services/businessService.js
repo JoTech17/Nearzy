@@ -394,6 +394,7 @@ export async function createBusiness(businessData) {
 
   if (isSupabaseConfigured && supabase) {
     try {
+      const isValidUUID = (id) => typeof id === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
       await supabase.from('businesses').insert({
         name: businessData.name,
         slug,
@@ -409,7 +410,7 @@ export async function createBusiness(businessData) {
         website: businessData.website,
         cover_image: businessData.coverImage,
         min_price: businessData.minPrice || 0,
-        owner_id: businessData.ownerId || null,
+        created_by: isValidUUID(businessData.ownerId) ? businessData.ownerId : null,
       })
     } catch (err) {
       console.error('Supabase business insert failed:', err)
@@ -467,30 +468,33 @@ export async function getOwnerBusiness(userId, businessId = null) {
   // 1. If Supabase is configured, check database first
   if (isSupabaseConfigured && supabase && userId) {
     try {
-      const { data, error } = await supabase
-        .from('businesses')
-        .select(`
-          *,
-          category:categories(id, name, name_ta, slug, icon),
-          services(*),
-          opening_hours(*)
-        `)
-        .eq('owner_id', userId)
-        .limit(1)
+      const isValidUUID = (id) => typeof id === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
+      if (isValidUUID(userId)) {
+        const { data, error } = await supabase
+          .from('businesses')
+          .select(`
+            *,
+            category:categories(id, name, name_ta, slug, icon),
+            services(*),
+            opening_hours(*)
+          `)
+          .eq('created_by', userId)
+          .limit(1)
 
-      if (!error && data && data.length > 0) {
-        const b = data[0]
-        return {
-          ...b,
-          categoryId: b.category_id,
-          categorySlug: b.category?.slug,
-          categoryName: b.category?.name,
-          categoryNameTa: b.category?.name_ta,
-          categoryIcon: b.category?.icon,
-          isVerified: b.is_verified,
-          minPrice: b.min_price,
-          coverImage: b.cover_image,
-          reviewCount: b.review_count,
+        if (!error && data && data.length > 0) {
+          const b = data[0]
+          return {
+            ...b,
+            categoryId: b.category_id,
+            categorySlug: b.category?.slug,
+            categoryName: b.category?.name,
+            categoryNameTa: b.category?.name_ta,
+            categoryIcon: b.category?.icon,
+            isVerified: b.is_verified,
+            minPrice: b.min_price,
+            coverImage: b.cover_image,
+            reviewCount: b.review_count,
+          }
         }
       }
     } catch (err) {
