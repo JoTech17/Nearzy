@@ -102,10 +102,10 @@ export function RegisterBusinessPage() {
             Sign In as Service Partner
           </Link>
           <Link
-            to="/login?role=customer"
-            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-neutral-100 hover:bg-neutral-200 text-black font-bold text-sm transition"
+            to="/register?role=business_owner&redirect=/register-business"
+            className="w-full sm:w-auto px-6 py-3.5 rounded-2xl border-2 border-black hover:bg-black hover:text-white text-black font-extrabold text-sm transition"
           >
-            Customer Login
+            Create Partner Account
           </Link>
         </div>
       </div>

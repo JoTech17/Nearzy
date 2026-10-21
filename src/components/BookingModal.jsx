@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Calendar, Clock, MapPin, Phone, FileText, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import { Calendar, Clock, MapPin, Phone, FileText, CheckCircle2, AlertCircle, Loader2, Lock, User, ArrowRight } from 'lucide-react'
 import { Modal } from './common/Modal'
 import { useLanguage } from '@/context/LanguageContext'
 import { useAuth } from '@/context/AuthContext'
@@ -36,6 +36,10 @@ export function BookingModal({ isOpen, onClose, business, initialService = null 
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!user) {
+      setError('Sign in is required to book a service.')
+      return
+    }
     if (!selectedServiceId) {
       setError('Please select a service.')
       return
@@ -53,8 +57,8 @@ export function BookingModal({ isOpen, onClose, business, initialService = null 
     setError('')
     try {
       const newBooking = await createBooking({
-        customerId: user?.id || 'guest_' + Date.now(),
-        customerName: user?.displayName || 'Customer',
+        customerId: user.id,
+        customerName: user.displayName || user.email?.split('@')[0] || 'Customer',
         customerPhone: phone,
         businessId: business.id,
         businessName: business.name,
@@ -85,7 +89,42 @@ export function BookingModal({ isOpen, onClose, business, initialService = null 
 
   return (
     <Modal isOpen={isOpen} onClose={handleReset} title={t('bookingModalTitle')} maxWidth="max-w-xl">
-      {createdBooking ? (
+      {!user ? (
+        <div className="py-8 px-4 text-center space-y-6 animate-in fade-in duration-200">
+          <div className="w-16 h-16 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center mx-auto border border-red-200 shadow-sm">
+            <Lock className="w-8 h-8" />
+          </div>
+          <div className="space-y-2">
+            <span className="text-xs font-black uppercase tracking-wider text-red-600">
+              Sign In Mandatory
+            </span>
+            <h3 className="text-2xl font-black text-black">
+              Sign In Required to Book Services
+            </h3>
+            <p className="text-xs text-neutral-600 max-w-sm mx-auto font-medium">
+              To book a verified doorstep service with <strong className="text-black">{business?.name}</strong>, please sign in to your Nearzy account.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <Link
+              to={`/login?role=customer&redirect=${encodeURIComponent(window.location.pathname)}`}
+              onClick={onClose}
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-red-600 hover:bg-black text-white text-xs font-black transition flex items-center justify-center gap-1.5 shadow-md"
+            >
+              <User className="w-4 h-4" />
+              <span>Customer Sign In</span>
+            </Link>
+            <Link
+              to={`/register?role=customer&redirect=${encodeURIComponent(window.location.pathname)}`}
+              onClick={onClose}
+              className="w-full sm:w-auto px-6 py-3 rounded-xl border-2 border-black hover:bg-black hover:text-white text-black text-xs font-black transition flex items-center justify-center gap-1.5"
+            >
+              <span>Create Account</span>
+            </Link>
+          </div>
+        </div>
+      ) : createdBooking ? (
         <div className="py-6 text-center space-y-4">
           <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-10 h-10" />

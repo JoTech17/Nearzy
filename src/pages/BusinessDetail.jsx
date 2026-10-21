@@ -85,6 +85,11 @@ export function BusinessDetailPage() {
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault()
+    if (!user) {
+      toast.error('Please sign in to write a review.')
+      navigate(`/login?redirect=${encodeURIComponent(location.pathname)}`)
+      return
+    }
     if (!newComment.trim()) return
 
     setSubmittingReview(true)
