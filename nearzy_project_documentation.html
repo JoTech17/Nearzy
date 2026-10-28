@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nearzy — Comprehensive Website & Architecture Documentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 12mm 14mm 12mm 14mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 9pt;
+      line-height: 1.45;
+      color: #1E293B;
+      background: #FFFFFF;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 270mm;
+      max-height: 272mm;
+      page-break-after: always;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    .content-wrap {
+      flex: 1;
+    }
+
+    /* Header & Footer */
+    .doc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #E2E8F0;
+      margin-bottom: 12px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: #DC2626;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 14pt;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-name {
+      font-size: 15pt;
+      font-weight: 800;
+      color: #0F172A;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-name span {
+      color: #DC2626;
+    }
+
+    .brand-subtitle {
+      font-size: 7.5pt;
+      font-weight: 600;
+      color: #64748B;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .doc-meta {
+      text-align: right;
+      font-size: 7.5pt;
+      color: #64748B;
+      line-height: 1.3;
+    }
+
+    .doc-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid #E2E8F0;
+      font-size: 7pt;
+      color: #94A3B8;
+      margin-top: 8px;
+    }
+
+    /* Section Styling */
+    h2.section-title {
+      font-size: 10.5pt;
+      font-weight: 800;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      margin-bottom: 6px;
+      padding-bottom: 3px;
+      border-bottom: 1.5px solid #F1F5F9;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .section-title .badge-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background: #FEE2E2;
+      color: #DC2626;
+      font-size: 9pt;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    p {
+      margin-bottom: 6px;
+      color: #334155;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    /* Card Blocks */
+    .card {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+
+    .card.primary {
+      background: #FEF2F2;
+      border-color: #FECACA;
+    }
+
+    .card.dark {
+      background: #0F172A;
+      color: #F8FAFC;
+      border-color: #1E293B;
+    }
+
+    .card.dark h3, .card.dark p, .card.dark span {
+      color: #F8FAFC;
+    }
+
+    .card h3 {
+      font-size: 8.5pt;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card p {
+      font-size: 7.8pt;
+      color: #475569;
+      margin-bottom: 0;
+      line-height: 1.35;
+    }
+
+    /* Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.8pt;
+      margin-bottom: 8px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    table.data-table th {
+      background: #F1F5F9;
+      color: #334155;
+      font-weight: 700;
+      text-align: left;
+      padding: 5px 8px;
+      border-bottom: 1px solid #CBD5E1;
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    table.data-table td {
+      padding: 4.5px 8px;
+      border-bottom: 1px solid #F1F5F9;
+      color: #334155;
+      vertical-align: top;
+    }
+
+    table.data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.data-table tr:nth-child(even) {
+      background: #FAFAFA;
+    }
+
+    /* Badges & Tags */
+    .pill {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 7pt;
+      font-weight: 600;
+      background: #E2E8F0;
+      color: #334155;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pill.red {
+      background: #FEE2E2;
+      color: #B91C1C;
+    }
+
+    .pill.blue {
+      background: #E0F2FE;
+      color: #0369A1;
+    }
+
+    .pill.green {
+      background: #DCFCE7;
+      color: #15803D;
+    }
+
+    .pill.purple {
+      background: #F3E8FF;
+      color: #7E22CE;
+    }
+
+    /* Q&A Items */
+    .qa-item {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 7px;
+      padding: 7px 10px;
+      margin-bottom: 6px;
+    }
+
+    .qa-q {
+      font-weight: 700;
+      font-size: 8.2pt;
+      color: #0F172A;
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      margin-bottom: 2px;
+    }
+
+    .qa-q .q-tag {
+      background: #DC2626;
+      color: #FFFFFF;
+      border-radius: 3px;
+      font-size: 6.5pt;
+      font-weight: 800;
+      padding: 1px 4px;
+      margin-top: 1px;
+    }
+
+    .qa-a {
+      font-size: 7.6pt;
+      color: #334155;
+      line-height: 1.35;
+      padding-left: 20px;
+    }
+
+    /* Diagram Block */
+    .flow-diagram {
+      background: #F8FAFC;
+      border: 1px dashed #CBD5E1;
+      border-radius: 6px;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .flow-node {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      padding: 5px 8px;
+      text-align: center;
+      flex: 1;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    .flow-node.highlight {
+      border-color: #DC2626;
+      background: #FEF2F2;
+    }
+
+    .flow-node-title {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    .flow-node-desc {
+      font-size: 6.5pt;
+      color: #64748B;
+    }
+
+    .flow-arrow {
+      padding: 0 6px;
+      color: #94A3B8;
+      font-weight: 700;
+      font-size: 9pt;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PAGE 1: OVERVIEW, REPO, ARCHITECTURE & STACK ==================== -->
+  <div class="page">
+    <div class="content-wrap">
+      
+      <!-- Top Header -->
+      <div class="doc-header">
+        <div class="brand-title">
+          <div class="brand-logo">N</div>
+          <div>
+            <div class="brand-name">Near<span>zy</span></div>
+            <div class="brand-subtitle">Unga Ooru, Unga Service! • Hyperlocal Marketplace</div>
+          </div>
+        </div>
+        <div class="doc-meta">
+          <strong>Project Architecture & Engineering Summary</strong><br>
+          Target Region: Tamil Nadu, India (38 Districts)<br>
+          Generated: October 2026 • Confidential Technical Document
+        </div>
+      </div>
+
+      <!-- Executive Overview -->
+      <h2 class="section-title"><span class="badge-icon">1</span> Executive Summary & Product Vision</h2>
+      <p style="font-size: 8.2pt; line-height: 1.4;">
+        <strong>Nearzy</strong> is a modern, high-performance hyperlocal marketplace built specifically for Tamil Nadu. It seamlessly connects residents with verified local service professionals (electricians, plumbers, AC technicians, beauticians, carpenters) within a precise <strong>30-kilometer geographical radius</strong>. Featuring real-time Leaflet maps, an intelligent bilingual AI assistant, and instant role-based dashboards, Nearzy digitizes neighborhood trades with zero friction.
+      </p>
+
+      <!-- Repository, Hosting & Deployment Table -->
+      <h2 class="section-title"><span class="badge-icon">2</span> GitHub, Hosting & Infrastructure</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 25%;">Component</th>
+            <th style="width: 35%;">Configuration / Provider</th>
+            <th style="width: 40%;">Key Implementation Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>GitHub Repository</strong></td>
+            <td><span class="pill red">JoTech17/Nearzy</span> (Git)</td>
+            <td>Version controlled on GitHub with dual synced branches: <code>master</code> (primary production) and <code>main</code>. Clean atomic commit history.</td>
+          </tr>
+          <tr>
+            <td><strong>Frontend Hosting</strong></td>
+            <td>Vercel / Netlify / Vite SPA Server</td>
+            <td>Static Client-Side SPA build served via global Edge CDN. Configured with <code>vercel.json</code> rewrite rules (<code>/* &rarr; /index.html</code>) for dynamic routing.</td>
+          </tr>
+          <tr>
+            <td><strong>Backend & Database</strong></td>
+            <td>Supabase Cloud (BaaS)</td>
+            <td>Managed PostgreSQL cluster (<code>ewczncwreeangxalnwqz.supabase.co</code>) with automated connection pooling, SSL encryption, and JWT authentication.</td>
+          </tr>
+          <tr>
+            <td><strong>AI Inference Host</strong></td>
+            <td>Google AI Gemini API</td>
+            <td>RESTful integration with <code>gemini-2.5-flash</code> providing ultra-low latency, natural language semantic search, and spatial filtering.</td>
+          </tr>
+          <tr>
+            <td><strong>Security & Protocols</strong></td>
+            <td>HTTPS / TLS 1.3 / JWT / Row Level Security</td>
+            <td>Row Level Security (RLS) policies on every Postgres table; encrypted bearer token authorization on all privileged database transactions.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- End-to-End System Architecture -->
+      <h2 class="section-title"><span class="badge-icon">3</span> High-Level System Architecture</h2>
+      <div class="flow-diagram">
+        <div class="flow-node">
+          <div class="flow-node-title">React 19 Client</div>
+          <div class="flow-node-desc">Vite SPA • Tailwind CSS • Framer Motion</div>
+        </div>
+        <div class="flow-arrow">&harr;</div>
+        <div class="flow-node highlight">
+          <div class="flow-node-title">Nearzy Services Engine</div>
+          <div class="flow-node-desc">30 km Haversine Math • Bilingual Engine</div>
+        </div>
+        <div class="flow-arrow">&harr;</div>
+        <div class="flow-node">
+          <div class="flow-node-title">Google Gemini AI</div>
+          <div class="flow-node-desc">Natural Language • District Intent</div>
+        </div>
+        <div class="flow-arrow">&harr;</div>
+        <div class="flow-node">
+          <div class="flow-node-title">Supabase PostgreSQL</div>
+          <div class="flow-node-desc">Auth • Triggers • RLS • 760+ Listings</div>
+        </div>
+      </div>
+
+      <!-- Core Technology Stack Matrix -->
+      <h2 class="section-title"><span class="badge-icon">4</span> Core Technology Stack Matrix</h2>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Frontend Layer <span class="pill blue">UI / UX</span></h3>
+          <p>
+            &bull; <strong>React 19.2.8</strong> (Modern functional components)<br>
+            &bull; <strong>Vite 8.3.4</strong> (Sub-second build & HMR)<br>
+            &bull; <strong>Tailwind CSS 3.4</strong> (Design system)<br>
+            &bull; <strong>Framer Motion 14.4</strong> (Route transitions & physics)<br>
+            &bull; <strong>Lucide React</strong> (Pixel-perfect icon library)
+          </p>
+        </div>
+        <div class="card">
+          <h3>Backend & Storage <span class="pill green">Database</span></h3>
+          <p>
+            &bull; <strong>PostgreSQL 15+</strong> (Relational core)<br>
+            &bull; <strong>Supabase JS SDK 2.118</strong> (Client queries)<br>
+            &bull; <strong>Postgres Triggers</strong> (Auto-profile creation)<br>
+            &bull; <strong>Row Level Security (RLS)</strong> (Role isolation)<br>
+            &bull; <strong>pg_trgm & UUID</strong> (Fuzzy search & unique IDs)
+          </p>
+        </div>
+        <div class="card">
+          <h3>Spatial & Intelligence <span class="pill purple">AI & Maps</span></h3>
+          <p>
+            &bull; <strong>Google Gemini Flash</strong> (Tamil & EN Assistant)<br>
+            &bull; <strong>Haversine Formula</strong> (30 km radius math)<br>
+            &bull; <strong>Leaflet 1.9 & React-Leaflet</strong> (Map view)<br>
+            &bull; <strong>OpenStreetMap Tiles</strong> (Statewide raster tiles)<br>
+            &bull; <strong>38 Districts Dataset</strong> (760+ localized shops)
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Page Footer -->
+    <div class="doc-footer">
+      <span>Nearzy Architectural Blueprint • Confidential</span>
+      <span>Page 1 of 3</span>
+      <span>Engineered for Tamil Nadu Local Commerce</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 2: DATABASE, AI & 30KM ALGORITHM ==================== -->
+  <div class="page">
+    <div class="content-wrap">
+      
+      <!-- Top Header -->
+      <div class="doc-header">
+        <div class="brand-title">
+          <div class="brand-logo">N</div>
+          <div>
+            <div class="brand-name">Near<span>zy</span></div>
+            <div class="brand-subtitle">Technical Deep-Dive • Database, AI & Algorithms</div>
+          </div>
+        </div>
+        <div class="doc-meta">
+          <strong>Backend Services & Spatial Engineering</strong><br>
+          Database Engine: PostgreSQL with Supabase BaaS<br>
+          Spatial Engine: Haversine Spherical Geometry
+        </div>
+      </div>
+
+      <!-- Database Schema & Triggers -->
+      <h2 class="section-title"><span class="badge-icon">5</span> Database Architecture & Automated Triggers</h2>
+      <p style="font-size: 8pt; margin-bottom: 6px;">
+        The relational database runs on Supabase PostgreSQL. It strictly enforces foreign keys, cascades, and security policies. User authentication directly activates database-level triggers to guarantee zero orphaned records.
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 22%;">Table Name</th>
+            <th style="width: 38%;">Primary Columns & Relations</th>
+            <th style="width: 40%;">Purpose & RLS Policies</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>auth.users</code></td>
+            <td><code>id (UUID PK), email, encrypted_password, raw_user_meta_data</code></td>
+            <td>Supabase internal authentication store. Manages encrypted user credentials, email confirmation tokens, and sessions.</td>
+          </tr>
+          <tr>
+            <td><code>public.profiles</code></td>
+            <td><code>id (UUID FK &rarr; auth.users), display_name, email, phone, preferred_language</code></td>
+            <td>Public profile entity. Populated instantly via <code>handle_new_user()</code> trigger. Viewable by public, updatable only by the owner.</td>
+          </tr>
+          <tr>
+            <td><code>public.user_roles</code></td>
+            <td><code>id (PK), user_id (FK &rarr; profiles), role ('customer' | 'business_owner' | 'admin')</code></td>
+            <td>Role-based access control (RBAC). Determines permissions for managing listings, claiming shops, or moderating content.</td>
+          </tr>
+          <tr>
+            <td><code>public.businesses</code></td>
+            <td><code>id (PK), category_id, name, slug, address, locality, city, latitude, longitude, phone, is_verified, created_by</code></td>
+            <td>Stores 760+ localized service businesses across Tamil Nadu. Indexed with geographic coordinates for fast spatial querying.</td>
+          </tr>
+          <tr>
+            <td><code>public.services</code> & <code>bookings</code></td>
+            <td><code>id, business_id, name, price, duration_minutes | customer_id, booking_date, status</code></td>
+            <td>Transactional booking subsystem. Allows customers to book appointments and track status (pending, confirmed, completed).</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- PostgreSQL Trigger Explanation -->
+      <div class="card" style="margin-bottom: 10px; background: #F8FAFC; border-left: 3px solid #DC2626;">
+        <h3 style="font-size: 8pt; color: #DC2626;">Automated Signup Database Trigger: public.handle_new_user()</h3>
+        <p style="font-size: 7.6pt; color: #334155;">
+          When a user signs up through <code>supabase.auth.signUp()</code>, the trigger <code>on_auth_user_created</code> immediately executes <code>public.handle_new_user()</code> on PostgreSQL. It extracts the display name, email, and preferred language from metadata and inserts atomic records into <code>public.profiles</code> and <code>public.user_roles</code>. This ensures frontend code never has to perform manual profile bootstrapping.
+        </p>
+      </div>
+
+      <!-- AI Assistant & 30 KM Spatial Algorithm -->
+      <h2 class="section-title"><span class="badge-icon">6</span> AI Assistant & 30 KM Spatial Geometry Engine</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Google Gemini AI Engine <span class="pill purple">Gemini Flash</span></h3>
+          <p>
+            &bull; <strong>Context-Aware Natural Language</strong>: Trained with platform system instructions containing catalog rules, contact details, and Tamil Nadu geography.<br>
+            &bull; <strong>Full Tamil & English Fluency</strong>: Understands colloquial Tamil queries (e.g. <em>"காரைக்குடியில் உள்ள எலக்ட்ரீஷியன்கள் காட்டு"</em>) as accurately as English.<br>
+            &bull; <strong>Intent Recognition</strong>: Automatically detects if the user is seeking a service, checking prices, asking how to list a business, or seeking customer care.
+          </p>
+        </div>
+        <div class="card">
+          <h3>30 KM Haversine Spatial Radius <span class="pill red">Mathematical Core</span></h3>
+          <p>
+            &bull; <strong>Spherical Trigonometry</strong>: Uses the great-circle distance formula to compute exact curvature distance across Earth's surface:<br>
+            <code style="font-size: 6.8pt; background: #F1F5F9; padding: 2px 4px; border-radius: 3px; display: block; margin: 3px 0;">d = 2R &sdot; asin(&radic;[sin&sup2;(&Delta;&phi;/2) + cos(&phi;1)&sdot;cos(&phi;2)&sdot;sin&sup2;(&Delta;&lambda;/2)])</code>
+            &bull; <strong>Strict Boundary Enforcement</strong>: When a user searches for a specific locality (e.g. Karaikudi), the AI strictly filters listings within &le; 30 km radius.
+          </p>
+        </div>
+      </div>
+
+      <!-- Bilingual Localization & Animations -->
+      <h2 class="section-title"><span class="badge-icon">7</span> Bilingual Engine & Micro-Animations</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Zero-Dependency Bilingual System (EN / தமிழ்)</h3>
+          <p>
+            Nearzy features a high-speed, zero-dependency translation context (<code>LanguageContext.jsx</code>). All UI labels, service categories, buttons, legal policies, and AI recommendations switch seamlessly between English and Tamil with 0ms delay.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Framer Motion Route Transmissions</h3>
+          <p>
+            Integrated with <code>framer-motion 14.4</code> and <code>AnimatePresence mode="wait"</code>. Every route navigation glides smoothly using custom cubic-bezier curves (<code>[0.16, 1, 0.3, 1]</code>), accompanied by spring-physics dialogs and staggered card entrances.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Page Footer -->
+    <div class="doc-footer">
+      <span>Nearzy Architectural Blueprint • Confidential</span>
+      <span>Page 2 of 3</span>
+      <span>Database, Artificial Intelligence & Spatial Systems</span>
+    </div>
+  </div>
+
+  <!-- ==================== PAGE 3: COMPREHENSIVE Q&A ==================== -->
+  <div class="page">
+    <div class="content-wrap">
+      
+      <!-- Top Header -->
+      <div class="doc-header">
+        <div class="brand-title">
+          <div class="brand-logo">N</div>
+          <div>
+            <div class="brand-name">Near<span>zy</span></div>
+            <div class="brand-subtitle">Project Q&A • Tools, Development Methodology & Operations</div>
+          </div>
+        </div>
+        <div class="doc-meta">
+          <strong>Engineering Q&A Reference</strong><br>
+          Development Tool: Antigravity AI Coding Assistant<br>
+          Project Repository: JoTech17/Nearzy
+        </div>
+      </div>
+
+      <!-- Quick Q&A Section -->
+      <h2 class="section-title"><span class="badge-icon">8</span> Key Questions & Answers (Everything You Need to Know)</h2>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q1</span> What is Nearzy and what core problem does it solve?</div>
+        <div class="qa-a">Nearzy is an on-demand hyperlocal service discovery platform for Tamil Nadu. It solves the fragmentation of finding verified neighborhood electricians, plumbers, carpenters, and beauty technicians by providing real-time 30 km radius matching, bilingual navigation, and direct booking.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q2</span> Which tools and agent were used to create this website?</div>
+        <div class="qa-a">The website was developed using <strong>Google DeepMind Antigravity</strong> (Advanced Agentic AI Coding Assistant) paired with the human engineer. Development tools included <strong>VS Code</strong>, <strong>Node.js v20+</strong>, <strong>Vite</strong>, <strong>Git CLI</strong>, and <strong>Supabase CLI</strong> for schema migrations.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q3</span> Where is the source code hosted and how is version control managed?</div>
+        <div class="qa-a">The complete source code is hosted on GitHub at <code>https://github.com/JoTech17/Nearzy.git</code>. Version control uses dual synchronized branches (<code>master</code> and <code>main</code>) with atomic commits and semantic feature tags for instant redeployment.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q4</span> Where is the website deployed and how does routing work?</div>
+        <div class="qa-a">The frontend is deployed as a high-speed Single Page Application (SPA) on modern cloud hosting (Vercel / Netlify Edge). Routing is powered by React Router v7 with rewrite rules configured in <code>vercel.json</code> to ensure all deep links (e.g., <code>/register-business</code>, <code>/privacy</code>, <code>/admin</code>) load smoothly without 404 errors.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q5</span> What database is used and how is user information stored?</div>
+        <div class="qa-a">Nearzy uses <strong>Supabase PostgreSQL</strong>. User authentication is managed in <code>auth.users</code>, which automatically synchronizes with <code>public.profiles</code> via the PostgreSQL trigger <code>handle_new_user()</code>. Role separation (Customer, Business Owner, Admin) is maintained in <code>public.user_roles</code> with Row Level Security.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q6</span> How does the AI Assistant provide accurate answers and 30 km recommendations?</div>
+        <div class="qa-a">The assistant is powered by <strong>Google Gemini Flash</strong> via REST API. When a query is received, it resolves the location coordinates against a master dataset of 38 Tamil Nadu districts and applies the Haversine formula to return exclusively verified providers within 30 km.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q7</span> How can an administrator verify registered profiles in the database?</div>
+        <div class="qa-a">Administrators have three convenient methods: (1) Running <code>npm run check:profiles</code> in the terminal to inspect live database records, (2) Visiting the <strong>Registered Profiles</strong> tab on the Nearzy Admin Console (<code>/admin</code>), or (3) Checking the <code>profiles</code> table directly in the Supabase Dashboard.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q8</span> How does the bilingual English and Tamil feature work?</div>
+        <div class="qa-a">The bilingual engine is powered by React's Context API (<code>LanguageContext.jsx</code>). All navigation, category titles, service details, and legal pages are stored as clean bilingual dictionaries with instant one-click switching and zero page reload delay.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q9</span> How was the UI made modern, smooth, and interactive?</div>
+        <div class="qa-a">We integrated <strong>Tailwind CSS</strong> for a sleek red-black-white visual hierarchy, coupled with <strong>Framer Motion</strong> for spring physics modals, smooth page route transmissions, interactive Leaflet map markers, and animated drawer menus.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q"><span class="q-tag">Q10</span> What are the next planned enhancements for Nearzy?</div>
+        <div class="qa-a">Planned milestones include Razorpay UPI payment gateway settlement, SMS / WhatsApp OTP notifications via Twilio / Gupshup, and a progressive web app (PWA) offline mobile service provider portal.</div>
+      </div>
+
+    </div>
+
+    <!-- Page Footer -->
+    <div class="doc-footer">
+      <span>Nearzy Architectural Blueprint • Confidential</span>
+      <span>Page 3 of 3</span>
+      <span>Comprehensive Technical Summary & Q&A Reference</span>
+    </div>
+  </div>
+
+</body>
+</html>
